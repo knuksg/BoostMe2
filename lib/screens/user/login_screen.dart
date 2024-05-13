@@ -37,28 +37,38 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Login user called");
     print(
         "Email: ${_emailController.text}, Password: ${_passwordController.text}");
-    String res = await AuthMethods().loginUser(
-        email: _emailController.text, password: _passwordController.text);
-    print("Result from loginUser: $res");
-    if (res == 'success') {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const ResponsiveLayout(
-              mobileScreenLayout: MobileScreenLayout(),
-              webScreenLayout: WebScreenLayout(),
-            ),
-          ),
-          (route) => false);
-
-      setState(() {
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      print("Login failed: $res");
-      showSnackBar(context, res);
+    try {
+      String res = await AuthMethods().loginUser(
+          email: _emailController.text, password: _passwordController.text);
+      print("Result from loginUser: $res");
+      if (res == 'success') {
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                ),
+              ),
+              (route) => false);
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+        print("Login failed: $res");
+        showSnackBar(context, res);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      print("Login failed with exception: $e");
+      showSnackBar(context, e.toString());
     }
   }
 

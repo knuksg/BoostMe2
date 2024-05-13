@@ -76,7 +76,7 @@ class AuthMethods {
       }
     } catch (err) {
       print("Error during login: $err");
-      return err.toString();
+      return err != null ? err.toString() : "Unknown error occurred";
     }
     return res;
   }
