@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 import 'package:boostme2/providers/user_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -61,25 +60,19 @@ class AuthMethods {
     required String password,
   }) async {
     String res = "Some error Occurred";
-    log("Attempting to log in user with email: $email");
-    print("Attempting to log in user with email: $email");
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
-        log("Attempting to log in user with email: $email");
+        // logging in user with email and password
         await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
-        log("Login successful for email: $email");
         res = "success";
       } else {
-        log("Please enter all the fields");
         res = "Please enter all the fields";
       }
-    } catch (err, stackTrace) {
-      log("Error logging in user: $err");
-      log("Stack trace: $stackTrace");
-      return err.toString();
+    } on Exception catch (err) {
+      res = err.toString();
     }
     return res;
   }
