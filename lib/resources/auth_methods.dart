@@ -62,17 +62,19 @@ class AuthMethods {
     String res = "Some error Occurred";
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
-        // logging in user with email and password
+        print("Attempting to log in user with email: $email");
         await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
+        print("Login successful for email: $email");
         res = "success";
       } else {
         res = "Please enter all the fields";
       }
-    } catch (err) {
-      print(err);
+    } catch (err, stackTrace) {
+      print("Error logging in user: $err");
+      print("Stack trace: $stackTrace");
       return err.toString();
     }
     return res;
