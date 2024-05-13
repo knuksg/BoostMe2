@@ -37,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Login user called");
     print(
         "Email: ${_emailController.text}, Password: ${_passwordController.text}");
+
     try {
       String res = await AuthMethods().loginUser(
           email: _emailController.text, password: _passwordController.text);

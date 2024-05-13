@@ -75,7 +75,6 @@ class AuthMethods {
         print("Email or password is empty");
       }
     } catch (err) {
-      print("Error during login: $err");
       return "Unknown error occurred";
     }
     return res;
