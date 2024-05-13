@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         "Email: ${_emailController.text}, Password: ${_passwordController.text}");
     String res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
-    print(res);
+    print("Result from loginUser: $res");
     if (res == 'success') {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = false;
       });
-      print(res);
+      print("Login failed: $res");
       showSnackBar(context, res);
     }
   }
