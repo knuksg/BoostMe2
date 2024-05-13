@@ -61,6 +61,8 @@ class AuthMethods {
     required String password,
   }) async {
     String res = "Some error Occurred";
+    log("Attempting to log in user with email: $email");
+    print("Attempting to log in user with email: $email");
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
         log("Attempting to log in user with email: $email");
