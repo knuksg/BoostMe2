@@ -162,7 +162,7 @@ class _YogaAddScreenState extends State<YogaAddScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    saveYoga(userProvider.getUser.uid);
+                    saveYoga(userProvider.getUser!.uid);
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(

@@ -8,11 +8,16 @@ class UserProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final AuthMethods _authMethods = AuthMethods();
 
-  model.User get getUser => _user!;
+  model.User? get getUser => _user;
 
   Future<void> refreshUser() async {
-    model.User user = await _authMethods.fetchUserById(_auth.currentUser!.uid);
-    _user = user;
-    notifyListeners();
+    if (_auth.currentUser != null) {
+      model.User user =
+          await _authMethods.fetchUserById(_auth.currentUser!.uid);
+      _user = user;
+      notifyListeners();
+    } else {
+      print("No current user found");
+    }
   }
 }

@@ -34,7 +34,7 @@ class _YogaListState extends State<YogaList> {
 
   @override
   Widget build(BuildContext context) {
-    final model.User user = Provider.of<UserProvider>(context).getUser;
+    final model.User user = Provider.of<UserProvider>(context).getUser!;
 
     return Container(
       color: mobileBackgroundColor,

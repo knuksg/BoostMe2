@@ -163,7 +163,7 @@ class _WorkoutAddScreenState extends State<WorkoutAddScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                   onPressed: () => saveExercise(
-                    userProvider.getUser.uid,
+                    userProvider.getUser!.uid,
                   ),
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(
