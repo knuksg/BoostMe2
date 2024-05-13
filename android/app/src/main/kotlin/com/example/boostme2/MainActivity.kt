@@ -1,0 +1,5 @@
+package com.example.boostme2
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
