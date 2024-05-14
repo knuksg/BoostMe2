@@ -45,8 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       print("Attempting to sign in with email and password");
-      res = await AuthMethods.loginUser(
-          auth: FirebaseAuth.instance, email: email, password: password);
+      res = await AuthMethods.loginUser(email: email, password: password);
       print("Result from loginUser: $res");
       if (res == 'success') {
         if (mounted) {

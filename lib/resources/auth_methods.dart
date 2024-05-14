@@ -55,7 +55,6 @@ class AuthMethods {
 
   // logging in user
   static Future<String> loginUser({
-    required FirebaseAuth auth,
     required String email,
     required String password,
   }) async {
@@ -68,7 +67,7 @@ class AuthMethods {
       } else {
         print("Attempting to sign in with email and password");
         // logging in user with email and password
-        await auth.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password,
         );

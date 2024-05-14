@@ -9447,13 +9447,13 @@ s=$.dt
 r=(s==null?$.dt=$.iw():s).ic("[DEFAULT]")
 A.dG(r,$.iv(),!0)
 return new A.a4o(q,p,A.qo(new A.eH(r)))},
-a4q(a,b,c){return A.aTr(a,b,c)},
-aTr(a,b,c){var s=0,r=A.C(t.N),q,p=2,o,n,m,l,k,j
-var $async$a4q=A.x(function(d,e){if(d===1){o=e
+a4q(a,b){return A.aTr(a,b)},
+aTr(a,b){var s=0,r=A.C(t.N),q,p=2,o,n,m,l,k,j,i
+var $async$a4q=A.x(function(c,d){if(c===1){o=d
 s=p}while(true)switch(s){case 0:A.c8("\ud83d\udd13 Attempting to sign in with email and password")
 n="Some error Occurred"
 p=4
-s=b.length===0||c.length===0?7:9
+s=a.length===0||b.length===0?7:9
 break
 case 7:A.c8("Email or password is empty")
 q="Please enter all the fields"
@@ -9462,19 +9462,22 @@ break
 s=8
 break
 case 9:A.c8(u.g)
+l=$.dt
+k=(l==null?$.dt=$.iw():l).ic("[DEFAULT]")
+A.dG(k,$.iv(),!0)
 s=10
-return A.J(a.yy(b,c),$async$a4q)
+return A.J(A.qo(new A.eH(k)).yy(a,b),$async$a4q)
 case 10:n="success"
 A.c8("Login successful")
 case 8:p=2
 s=6
 break
 case 4:p=3
-j=o
-m=A.a2(j)
+i=o
+m=A.a2(i)
 A.c8("Exception: "+A.h(m))
-k=A.h(m)
-q="Unknown error occurred: "+k
+l=A.h(m)
+q="Unknown error occurred: "+l
 s=1
 break
 s=6
@@ -50715,7 +50718,7 @@ s.dx$=0
 s=this.e
 s.dy$=r
 s.dx$=0},
-zK(){var s=0,r=A.C(t.H),q=1,p,o=this,n,m,l,k,j,i,h,g,f
+zK(){var s=0,r=A.C(t.H),q=1,p,o=this,n,m,l,k,j,i,h,g
 var $async$zK=A.x(function(a,b){if(a===1){p=b
 s=q}while(true)switch(s){case 0:o.M(new A.auc(o))
 A.c8("Login user called")
@@ -50725,34 +50728,31 @@ A.c8("Email: "+A.h(n)+", Password: "+A.h(m))
 l="Some error Occurred"
 q=3
 A.c8(u.g)
-j=$.dt
-i=(j==null?$.dt=$.iw():j).ic("[DEFAULT]")
-A.dG(i,$.iv(),!0)
 s=6
-return A.J(A.a4q(A.qo(new A.eH(i)),n,m),$async$zK)
+return A.J(A.a4q(n,m),$async$zK)
 case 6:l=b
 A.c8("Result from loginUser: "+A.h(l))
 if(J.d(l,"success")){j=o.c
 if(j!=null)A.bV(j,!1).ajX(A.awU(A.h_(new A.aud(),null,t.z),B.ms,!1,null),new A.aue())}else{if(o.c!=null)o.M(new A.auf(o))
 A.c8("Login failed: "+A.h(l))
 j=o.c
-h=l
+i=l
 j=j.a3(t.Pu)
 j.toString
-j.f.iI(A.l0(null,null,null,null,null,B.t,null,A.aO(h,null,null,null,null,null,null,null),null,B.bq,null,null,null,null,null,null,null,null,null))}q=1
+j.f.iI(A.l0(null,null,null,null,null,B.t,null,A.aO(i,null,null,null,null,null,null,null),null,B.bq,null,null,null,null,null,null,null,null,null))}q=1
 s=5
 break
 case 3:q=2
-f=p
-k=A.a2(f)
+g=p
+k=A.a2(g)
 if(o.c!=null)o.M(new A.aug(o))
 A.c8("Login failed with exception: "+A.h(k))
 j=o.c
 j.toString
-h=J.ci(k)
+i=J.ci(k)
 j=j.a3(t.Pu)
 j.toString
-j.f.iI(A.l0(null,null,null,null,null,B.t,null,A.aO(h,null,null,null,null,null,null,null),null,B.bq,null,null,null,null,null,null,null,null,null))
+j.f.iI(A.l0(null,null,null,null,null,B.t,null,A.aO(i,null,null,null,null,null,null,null),null,B.bq,null,null,null,null,null,null,null,null,null))
 s=5
 break
 case 2:s=1
