@@ -33,12 +33,16 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
     print("Login user called");
-    print(
-        "Email: ${_emailController.text}, Password: ${_passwordController.text}");
+
+    // Null check
+    String email = _emailController.text ?? '';
+    String password = _passwordController.text ?? '';
+
+    print("Email: $email, Password: $password");
 
     try {
-      String res = await AuthMethods().loginUser(
-          email: _emailController.text, password: _passwordController.text);
+      String res =
+          await AuthMethods().loginUser(email: email, password: password);
       print("Result from loginUser: $res");
       if (res == 'success') {
         if (mounted) {

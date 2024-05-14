@@ -56,16 +56,16 @@ class AuthMethods {
 
   // logging in user
   Future<String> loginUser({
-    required String? email,
-    required String? password,
+    required String email,
+    required String password,
   }) async {
     print("🔓 Attempting to sign in with email and password");
     String res = "Some error Occurred";
     try {
-      if (email == null || password == null) {
+      if (email.isEmpty || password.isEmpty) {
         print("Email or password is empty");
         return "Please enter all the fields";
-      } else if (email.isNotEmpty && password.isNotEmpty) {
+      } else {
         print("Attempting to sign in with email and password");
         // logging in user with email and password
         await _auth.signInWithEmailAndPassword(
@@ -74,11 +74,9 @@ class AuthMethods {
         );
         res = "success";
         print("Login successful");
-      } else {
-        res = "Please enter all the fields";
-        print("Email or password is empty");
       }
     } catch (err) {
+      print("Exception: $err"); // Log the exception to understand the error
       return "Unknown error occurred";
     }
     return res;
