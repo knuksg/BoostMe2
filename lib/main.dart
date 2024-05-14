@@ -20,6 +20,8 @@ void main() async {
   );
   await dotenv.load(fileName: ".env");
 
+  FirebaseAuth.instance.signOut();
+
   runApp(const MyApp());
 }
 
