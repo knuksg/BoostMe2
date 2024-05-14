@@ -26,6 +26,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   void initState() {
+    print("post: ${widget.post.uid}");
     super.initState();
     fetchCommentLen();
   }
@@ -61,6 +62,7 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     final model.User user = Provider.of<UserProvider>(context).getUser!;
+    print("user: ${user.uid}");
     final width = MediaQuery.of(context).size.width;
 
     return Container(

@@ -32,20 +32,22 @@ class _FeedScreenState extends State<FeedScreen> {
             return const Center(
               child: Text('No posts found'),
             );
+          } else if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (ctx, index) => Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: width > webScreenSize ? width * 0.3 : 0,
+                  vertical: width > webScreenSize ? 15 : 0,
+                ),
+                child: PostCard(
+                  post: snapshot.data![index],
+                ),
+              ),
+            );
           }
 
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (ctx, index) => Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: width > webScreenSize ? width * 0.3 : 0,
-                vertical: width > webScreenSize ? 15 : 0,
-              ),
-              child: PostCard(
-                post: snapshot.data![index],
-              ),
-            ),
-          );
+          return const SizedBox();
         },
       ),
     );
