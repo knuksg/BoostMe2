@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 class UserProvider with ChangeNotifier {
   model.User? _user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final AuthMethods _authMethods = AuthMethods();
 
   model.User? get getUser => _user;
 
   Future<void> refreshUser() async {
     if (_auth.currentUser != null) {
-      model.User user =
-          await _authMethods.fetchUserById(_auth.currentUser!.uid);
+      model.User user = await AuthMethods.fetchUserById(_auth.currentUser!.uid);
       _user = user;
       notifyListeners();
     } else {

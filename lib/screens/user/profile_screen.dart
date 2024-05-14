@@ -32,8 +32,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       isLoading = true;
     });
     try {
-      user = await AuthMethods().fetchUserById(widget.uid);
-      var post = await SqlMethods().fetchPosts();
+      user = await AuthMethods.fetchUserById(widget.uid);
+      var post = await SqlMethods.fetchPosts();
       postLen = post.length;
 
       setState(() {});

@@ -204,9 +204,11 @@ class SqlMethods {
   //   }
   // }
 
-  Future<List<Post>> fetchPosts() async {
+  static Future<List<Post>> fetchPosts() async {
+    final dio = Dio();
+    final String baseUrl = dotenv.env['API_URL']!;
     try {
-      final response = await _dio.get('$baseUrl/api/posts');
+      final response = await dio.get('$baseUrl/api/posts');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
         List<Post> posts =

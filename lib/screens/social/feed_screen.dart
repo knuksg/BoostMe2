@@ -18,7 +18,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
     return Scaffold(
       body: FutureBuilder<List<Post>>(
-        future: SqlMethods().fetchPosts(),
+        future: SqlMethods.fetchPosts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

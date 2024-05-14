@@ -10,7 +10,7 @@ class AuthMethods {
   final String baseUrl = dotenv.env['API_URL']!;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<String> signUpUser({
+  static Future<String> signUpUser({
     required String email,
     required String password,
     required String username,
@@ -25,7 +25,8 @@ class AuthMethods {
           bio.isNotEmpty ||
           file.isNotEmpty) {
         // registering user in auth with email and password
-        UserCredential cred = await _auth.createUserWithEmailAndPassword(
+        UserCredential cred =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -81,13 +82,15 @@ class AuthMethods {
     return res;
   }
 
-  Future<void> signOut() async {
-    await _auth.signOut();
+  static Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
-  Future<List<model.User>> fetchUsers() async {
+  static Future<List<model.User>> fetchUsers() async {
+    Dio dio = Dio();
+    final String baseUrl = dotenv.env['API_URL']!;
     try {
-      final response = await _dio.get('$baseUrl/api/users');
+      final response = await dio.get('$baseUrl/api/users');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
         List<model.User> users =
@@ -101,10 +104,12 @@ class AuthMethods {
     }
   }
 
-  Future<model.User> fetchUserById(String id) async {
+  static Future<model.User> fetchUserById(String id) async {
+    Dio dio = Dio();
+    final String baseUrl = dotenv.env['API_URL']!;
     try {
       print("🔓 Fetching user with ID: $id");
-      final response = await _dio.get('$baseUrl/api/users/$id');
+      final response = await dio.get('$baseUrl/api/users/$id');
       print(response.data);
       if (response.statusCode == 200) {
         return model.User.fromJson(response.data);
@@ -117,9 +122,11 @@ class AuthMethods {
     }
   }
 
-  Future<void> createUser(model.User user) async {
+  static Future<void> createUser(model.User user) async {
+    Dio dio = Dio();
+    final String baseUrl = dotenv.env['API_URL']!;
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         '$baseUrl/api/users',
         data: user.toJson(),
       );
@@ -131,9 +138,11 @@ class AuthMethods {
     }
   }
 
-  Future<void> updateUser(String id, model.User user) async {
+  static Future<void> updateUser(String id, model.User user) async {
+    Dio dio = Dio();
+    final String baseUrl = dotenv.env['API_URL']!;
     try {
-      final response = await _dio.put(
+      final response = await dio.put(
         '$baseUrl/api/users/$id',
         data: user.toJson(),
       );
@@ -145,9 +154,11 @@ class AuthMethods {
     }
   }
 
-  Future<void> deleteUser(String id) async {
+  static Future<void> deleteUser(String id) async {
+    Dio dio = Dio();
+    final String baseUrl = dotenv.env['API_URL']!;
     try {
-      final response = await _dio.delete('$baseUrl/api/users/$id');
+      final response = await dio.delete('$baseUrl/api/users/$id');
       if (response.statusCode != 200) {
         throw Exception('Failed to delete user');
       }

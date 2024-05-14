@@ -34,7 +34,7 @@ class _BMICalState extends State<BMICal> {
       isLoading = true;
     });
     try {
-      user = await AuthMethods().fetchUserById(widget.uid);
+      user = await AuthMethods.fetchUserById(widget.uid);
     } catch (e) {
       showSnackBar(
         context,
