@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:boostme2/resources/auth_methods.dart';
 import 'package:boostme2/responsive/mobile_screen_layout.dart';
 import 'package:boostme2/responsive/responsive_layout_screen.dart';

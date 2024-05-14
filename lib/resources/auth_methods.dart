@@ -59,6 +59,7 @@ class AuthMethods {
     required String email,
     required String password,
   }) async {
+    print("🔓 Attempting to sign in with email and password");
     String res = "Some error Occurred";
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
