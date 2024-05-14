@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               InkWell(
                 onTap: () {
-                  print("Login user called");
+                  loginUser();
                 },
                 child: Container(
                   width: double.infinity,
