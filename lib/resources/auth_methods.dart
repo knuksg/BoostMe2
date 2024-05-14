@@ -53,7 +53,7 @@ class AuthMethods {
     return res;
   }
 
-  Future<void> testFunction() async {
+  void testFunction() async {
     print("Test function called");
   }
 
