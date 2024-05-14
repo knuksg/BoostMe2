@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 class SqlMethods {
   final Dio _dio = Dio();
-  final String baseUrl = dotenv.env['API_URL']!;
+  final String baseUrl = "http://localhost:4000";
 
   Future<String> uploadPost(String description, Uint8List file, String uid,
       String username, String profImage) async {
