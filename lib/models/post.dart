@@ -44,4 +44,9 @@ class Post {
         'postUrl': postUrl,
         'profImage': profImage
       };
+
+  @override
+  String toString() {
+    return 'Post(description: $description, uid: $uid, username: $username, likes: $likes, postId: $postId, datePublished: $datePublished, postUrl: $postUrl, profImage: $profImage)';
+  }
 }

@@ -49855,7 +49855,9 @@ return B.vu},
 $S:344}
 A.kU.prototype={
 f1(){var s=this
-return A.aG(["description",s.a,"uid",s.b,"likes",s.d,"username",s.c,"postId",s.e,"datePublished",s.f.axu(),"postUrl",s.r,"profImage",s.w],t.N,t.z)}}
+return A.aG(["description",s.a,"uid",s.b,"likes",s.d,"username",s.c,"postId",s.e,"datePublished",s.f.axu(),"postUrl",s.r,"profImage",s.w],t.N,t.z)},
+j(a){var s=this
+return"Post(description: "+s.a+", uid: "+s.b+", username: "+s.c+", likes: "+A.h(s.d)+", postId: "+s.e+", datePublished: "+s.f.j(0)+", postUrl: "+s.r+", profImage: "+s.w+")"}}
 A.Fw.prototype={
 f1(){var s=this
 return A.aG(["username",s.d,"uid",s.b,"email",s.a,"photo_url",s.c,"bio",s.e],t.N,t.z)}}
