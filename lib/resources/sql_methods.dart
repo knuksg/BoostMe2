@@ -207,7 +207,7 @@ class SqlMethods {
   static Future<List<Post>> fetchPosts() async {
     print('🔓 Fetching posts');
     final dio = Dio();
-    final String baseUrl = dotenv.env['API_URL']!;
+    const String baseUrl = "https://www.flyingstone.me/boostme/";
     print(baseUrl);
     print('🔓 Fetching posts...');
     try {
