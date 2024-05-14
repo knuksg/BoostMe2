@@ -19,6 +19,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await dotenv.load(fileName: ".env");
+  print('Loaded API_URL: ${dotenv.env['API_URL']}'); // 환경 변수가 올바르게 로드되었는지 확인
 
   FirebaseAuth.instance.signOut();
 
