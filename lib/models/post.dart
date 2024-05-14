@@ -19,16 +19,20 @@ class Post {
     required this.profImage,
   });
 
-  static Post fromJson(Map<String, dynamic> json) => Post(
-        description: json['description'],
-        uid: json['uid'],
-        likes: [],
-        username: json['username'],
-        postId: json['postId'],
-        datePublished: DateTime.parse(json['datePublished']),
-        postUrl: json['postUrl'],
-        profImage: json['profImage'],
-      );
+  static Post fromJson(Map<String, dynamic> json) {
+    return Post(
+      description: json['description'] ?? '',
+      uid: json['uid'] ?? '',
+      likes: json['likes'] ?? [],
+      username: json['username'] ?? '',
+      postId: json['postId'] ?? '',
+      datePublished: json['datePublished'] != null
+          ? DateTime.parse(json['datePublished'])
+          : DateTime.now(),
+      postUrl: json['postUrl'] ?? '',
+      profImage: json['profImage'] ?? '',
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "description": description,
