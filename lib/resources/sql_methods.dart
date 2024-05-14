@@ -208,6 +208,8 @@ class SqlMethods {
     print('🔓 Fetching posts');
     final dio = Dio();
     final String baseUrl = dotenv.env['API_URL']!;
+    print(baseUrl);
+    print('🔓 Fetching posts...');
     try {
       final response = await dio.get('$baseUrl/api/posts');
       if (response.statusCode == 200) {
