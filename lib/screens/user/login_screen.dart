@@ -35,8 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Login user called");
 
     // Null check
-    String email = _emailController.text ?? '';
-    String password = _passwordController.text ?? '';
+    String email = _emailController.text;
+    String password = _passwordController.text;
 
     print("Email: $email, Password: $password");
 
@@ -44,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       print("Attempting to sign in with email and password");
+      AuthMethods().testFunction();
       res = await AuthMethods().loginUser(email: email, password: password);
       print("Result from loginUser: $res");
       if (res == 'success') {

@@ -53,6 +53,10 @@ class AuthMethods {
     return res;
   }
 
+  Future<void> testFunction() async {
+    print("Test function called");
+  }
+
   // logging in user
   Future<String> loginUser({
     required String email,
