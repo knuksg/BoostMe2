@@ -1,3 +1,4 @@
+import 'package:boostme2/providers/user_provider.dart';
 import 'package:boostme2/resources/auth_methods.dart';
 import 'package:boostme2/responsive/mobile_screen_layout.dart';
 import 'package:boostme2/responsive/responsive_layout_screen.dart';
@@ -42,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String res =
           await AuthMethods.loginUser(email: email, password: password);
       if (res == 'success') {
+        await UserProvider().refreshUser();
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
