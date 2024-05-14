@@ -9454,7 +9454,7 @@ s=p}while(true)switch(s){case 0:A.c8("\ud83d\udd13 Fetching posts")
 n=A.qc(null)
 p=4
 s=7
-return A.J(J.aHR(n,"https://www.flyingstone.me/boostme//api/posts",t.z),$async$SN)
+return A.J(J.aHR(n,"https://localhost:4000/api/posts",t.z),$async$SN)
 case 7:m=b
 if(m.c===200){l=m.a
 A.c8("data: "+A.h(l))
@@ -30222,7 +30222,7 @@ s=p}while(true)switch(s){case 0:e=A.qc(null)
 p=4
 A.c8("\ud83d\udd13 Fetching user with ID: "+a)
 s=7
-return A.J(J.aHR(e,"http://localhost:4000/api/users/"+a,t.z),$async$zu)
+return A.J(J.aHR(e,"https://localhost:4000/api/users/"+a,t.z),$async$zu)
 case 7:n=c
 A.c8(n.a)
 if(n.c===200){l=n.a
@@ -30259,7 +30259,7 @@ var $async$a4t=A.v(function(b,c){if(b===1){p=c
 s=q}while(true)switch(s){case 0:k=A.qc(null)
 q=3
 s=6
-return A.J(k.Ds("http://localhost:4000/api/users",a.f1(),t.z),$async$a4t)
+return A.J(k.Ds("https://localhost:4000/api/users",a.f1(),t.z),$async$a4t)
 case 6:o=c
 if(o.c!==201){m=A.bU("Failed to create user")
 throw A.c(m)}q=1
@@ -49980,7 +49980,7 @@ aq2(a){var s=0,r=A.A(t.H),q=1,p,o=this,n,m,l,k,j
 var $async$Bx=A.v(function(b,c){if(b===1){p=c
 s=q}while(true)switch(s){case 0:q=3
 s=6
-return A.J(o.a.Ds("http://localhost:4000/api/posts",a.f1(),t.z),$async$Bx)
+return A.J(o.a.Ds("https://localhost:4000/api/posts",a.f1(),t.z),$async$Bx)
 case 6:n=c
 if(n.c!==201){l=A.bU("Failed to create post")
 throw A.c(l)}q=1
@@ -50002,7 +50002,7 @@ C1(){var s=0,r=A.A(t.Nl),q,p=2,o,n=this,m,l,k,j,i,h,g
 var $async$C1=A.v(function(a,b){if(a===1){o=b
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.J(n.a.Em(0,"http://localhost:4000/api/yogas",t.z),$async$C1)
+return A.J(n.a.Em(0,"https://localhost:4000/api/yogas",t.z),$async$C1)
 case 7:m=b
 if(m.c===200){l=m.a
 i=J.kn(l,new A.aly(),t.Nj)
@@ -50030,7 +50030,7 @@ aqa(a){var s=0,r=A.A(t.H),q=1,p,o=this,n,m,l,k,j
 var $async$BC=A.v(function(b,c){if(b===1){p=c
 s=q}while(true)switch(s){case 0:q=3
 s=6
-return A.J(o.a.Ds("http://localhost:4000/api/yogas",a.f1(),t.z),$async$BC)
+return A.J(o.a.Ds("https://localhost:4000/api/yogas",a.f1(),t.z),$async$BC)
 case 6:n=c
 if(n.c!==201){l=A.bU("Failed to create yoga")
 throw A.c(l)}q=1
@@ -50052,7 +50052,7 @@ C0(){var s=0,r=A.A(t.Bp),q,p=2,o,n=this,m,l,k,j,i,h,g
 var $async$C0=A.v(function(a,b){if(a===1){o=b
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.J(n.a.Em(0,"http://localhost:4000/api/workouts",t.z),$async$C0)
+return A.J(n.a.Em(0,"https://localhost:4000/api/workouts",t.z),$async$C0)
 case 7:m=b
 if(m.c===200){l=m.a
 i=J.kn(l,new A.alx(),t.ON)
@@ -50080,7 +50080,7 @@ aq9(a){var s=0,r=A.A(t.H),q=1,p,o=this,n,m,l,k,j
 var $async$BB=A.v(function(b,c){if(b===1){p=c
 s=q}while(true)switch(s){case 0:q=3
 s=6
-return A.J(o.a.Ds("http://localhost:4000/api/workouts",a.f1(),t.z),$async$BB)
+return A.J(o.a.Ds("https://localhost:4000/api/workouts",a.f1(),t.z),$async$BB)
 case 6:n=c
 if(n.c!==201){l=A.bU("Failed to create workout")
 throw A.c(l)}q=1

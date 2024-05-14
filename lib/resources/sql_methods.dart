@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 class SqlMethods {
   final Dio _dio = Dio();
-  final String baseUrl = "http://localhost:4000";
+  final String baseUrl = "https://localhost:4000";
 
   Future<String> uploadPost(String description, Uint8List file, String uid,
       String username, String profImage) async {
@@ -207,7 +207,7 @@ class SqlMethods {
   static Future<List<Post>> fetchPosts() async {
     print('🔓 Fetching posts');
     final dio = Dio();
-    const String baseUrl = "https://www.flyingstone.me/boostme/";
+    const String baseUrl = "https://localhost:4000";
     try {
       final response = await dio.get('$baseUrl/api/posts');
       if (response.statusCode == 200) {
