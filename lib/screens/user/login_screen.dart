@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
-  void loginUser() async {
+  void _loginUser() async {
     setState(() {
       _isLoading = true;
     });
@@ -40,9 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     print("Email: $email, Password: $password");
 
+    String res = "Some error Occurred";
+
     try {
-      String res =
-          await AuthMethods().loginUser(email: email, password: password);
+      // res = await AuthMethods().loginUser(email: email, password: password);
       print("Result from loginUser: $res");
       if (res == 'success') {
         if (mounted) {
@@ -120,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               InkWell(
                 onTap: () {
-                  loginUser();
+                  _loginUser();
                 },
                 child: Container(
                   width: double.infinity,

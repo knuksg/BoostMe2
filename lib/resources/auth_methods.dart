@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:boostme2/providers/user_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:boostme2/resources/storage_method.dart';
 import 'package:dio/dio.dart';
