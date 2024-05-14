@@ -56,13 +56,16 @@ class AuthMethods {
 
   // logging in user
   Future<String> loginUser({
-    required String email,
-    required String password,
+    required String? email,
+    required String? password,
   }) async {
     print("🔓 Attempting to sign in with email and password");
     String res = "Some error Occurred";
     try {
-      if (email.isNotEmpty && password.isNotEmpty) {
+      if (email == null || password == null) {
+        print("Email or password is empty");
+        return "Please enter all the fields";
+      } else if (email.isNotEmpty && password.isNotEmpty) {
         print("Attempting to sign in with email and password");
         // logging in user with email and password
         await _auth.signInWithEmailAndPassword(
