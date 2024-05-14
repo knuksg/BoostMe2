@@ -53,7 +53,7 @@ class AuthMethods {
     return res;
   }
 
-  void printTest() {
+  static void printTest() {
     print("AuthMethods instance is working");
   }
 
