@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = "Some error Occurred";
 
     try {
-      // res = await AuthMethods().loginUser(email: email, password: password);
+      res = await AuthMethods().loginUser(email: email, password: password);
       print("Result from loginUser: $res");
       if (res == 'success') {
         if (mounted) {
