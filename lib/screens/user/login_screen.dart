@@ -33,20 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    print("Login user called");
 
     // Null check
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    print("Email: $email, Password: $password");
-
-    String res = "Some error Occurred";
-
     try {
-      print("Attempting to sign in with email and password");
-      res = await AuthMethods.loginUser(email: email, password: password);
-      print("Result from loginUser: $res");
+      String res =
+          await AuthMethods.loginUser(email: email, password: password);
       if (res == 'success') {
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(

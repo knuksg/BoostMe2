@@ -59,21 +59,18 @@ class AuthMethods {
     required String email,
     required String password,
   }) async {
-    print("🔓 Attempting to sign in with email and password");
     String res = "Some error Occurred";
     try {
       if (email.isEmpty || password.isEmpty) {
         print("Email or password is empty");
         return "Please enter all the fields";
       } else {
-        print("Attempting to sign in with email and password");
         // logging in user with email and password
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
         res = "success";
-        print("Login successful");
       }
     } catch (err) {
       print("Exception: $err"); // Log the exception to understand the error

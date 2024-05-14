@@ -205,12 +205,14 @@ class SqlMethods {
   // }
 
   static Future<List<Post>> fetchPosts() async {
+    print('🔓 Fetching posts');
     final dio = Dio();
     final String baseUrl = dotenv.env['API_URL']!;
     try {
       final response = await dio.get('$baseUrl/api/posts');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
+        print(data);
         List<Post> posts =
             data.map((userJson) => Post.fromJson(userJson)).toList();
         return posts;
@@ -218,6 +220,7 @@ class SqlMethods {
         throw Exception('Failed to load posts');
       }
     } catch (e) {
+      print(e.toString());
       throw Exception('Failed to load posts: $e');
     }
   }
