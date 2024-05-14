@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         "Email: ${_emailController.text}, Password: ${_passwordController.text}");
 
     try {
-      String res = await AuthMethods().loginUser(
+      String? res = await AuthMethods().loginUser(
           email: _emailController.text, password: _passwordController.text);
       print("Result from loginUser: $res");
       if (res == 'success') {
