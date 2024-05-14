@@ -49749,7 +49749,7 @@ case 1:return A.A(q,r)
 case 2:return A.z(o,r)}})
 return A.B($async$pM,r)},
 CX(a,b){return this.auv(a,b)},
-auv(a,b){var s=0,r=A.C(t.N),q,p=2,o,n=this,m,l,k,j
+auv(a,b){var s=0,r=A.C(t.N),q,p=2,o,n=this,m,l,k,j,i
 var $async$CX=A.x(function(c,d){if(c===1){o=d
 s=p}while(true)switch(s){case 0:A.cf("\ud83d\udd13 Attempting to sign in with email and password")
 m="Some error Occurred"
@@ -49771,10 +49771,11 @@ case 8:p=2
 s=6
 break
 case 4:p=3
-j=o
-l=A.a2(j)
+i=o
+l=A.a2(i)
 A.cf("Exception: "+A.h(l))
-q="Unknown error occurred"
+j=A.h(l)
+q="Unknown error occurred: "+j
 s=1
 break
 s=6

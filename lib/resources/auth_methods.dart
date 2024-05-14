@@ -77,7 +77,7 @@ class AuthMethods {
       }
     } catch (err) {
       print("Exception: $err"); // Log the exception to understand the error
-      return "Unknown error occurred";
+      return "Unknown error occurred: $err";
     }
     return res;
   }
