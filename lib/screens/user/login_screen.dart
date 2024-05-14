@@ -41,10 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Email: $email, Password: $password");
 
     String res = "Some error Occurred";
+    AuthMethods().printTest();
 
     try {
       print("Attempting to sign in with email and password");
-      AuthMethods().testFunction();
+      AuthMethods().printTest();
       res = await AuthMethods().loginUser(email: email, password: password);
       print("Result from loginUser: $res");
       if (res == 'success') {

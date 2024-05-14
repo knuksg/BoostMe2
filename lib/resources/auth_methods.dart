@@ -53,8 +53,8 @@ class AuthMethods {
     return res;
   }
 
-  void testFunction() async {
-    print("Test function called");
+  void printTest() {
+    print("AuthMethods instance is working");
   }
 
   // logging in user
