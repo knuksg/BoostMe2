@@ -7,6 +7,7 @@ import 'package:boostme2/utils/colors.dart';
 import 'package:boostme2/utils/global_variables.dart';
 import 'package:boostme2/utils/utils.dart';
 import 'package:boostme2/widgets/text_field_input.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -41,12 +42,11 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Email: $email, Password: $password");
 
     String res = "Some error Occurred";
-    AuthMethods.printTest();
 
     try {
       print("Attempting to sign in with email and password");
-      AuthMethods.printTest();
-      res = await AuthMethods().loginUser(email: email, password: password);
+      res = await AuthMethods.loginUser(
+          auth: FirebaseAuth.instance, email: email, password: password);
       print("Result from loginUser: $res");
       if (res == 'success') {
         if (mounted) {

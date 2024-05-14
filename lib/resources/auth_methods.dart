@@ -53,12 +53,9 @@ class AuthMethods {
     return res;
   }
 
-  static void printTest() {
-    print("AuthMethods instance is working");
-  }
-
   // logging in user
-  Future<String> loginUser({
+  static Future<String> loginUser({
+    required FirebaseAuth auth,
     required String email,
     required String password,
   }) async {
@@ -71,7 +68,7 @@ class AuthMethods {
       } else {
         print("Attempting to sign in with email and password");
         // logging in user with email and password
-        await _auth.signInWithEmailAndPassword(
+        await auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
