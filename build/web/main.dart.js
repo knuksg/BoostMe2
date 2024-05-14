@@ -9376,7 +9376,7 @@ var $async$a3x=A.v(function(a,b){if(a===1)return A.x(b,r)
 while(true)switch(s){case 0:if($.av==null)A.aFr()
 $.av.toString
 s=2
-return A.J($.L8().CT(0,".env"),$async$a3x)
+return A.J($.L8().CT(0,"assets/.env"),$async$a3x)
 case 2:A.c8("Loaded API_URL: "+A.h($.L8().gBY().h(0,"API_URL")))
 s=3
 return A.J(A.aao(A.aUD()),$async$a3x)
