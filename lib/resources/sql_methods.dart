@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 class SqlMethods {
   final Dio _dio = Dio();
-  final String baseUrl = "https://localhost:4000";
+  final String baseUrl = "https://flyingstone.me/boostme";
 
   Future<String> uploadPost(String description, Uint8List file, String uid,
       String username, String profImage) async {

@@ -7,7 +7,7 @@ import 'package:boostme2/models/user.dart' as model;
 
 class AuthMethods {
   final Dio _dio = Dio();
-  final String baseUrl = "https://localhost:4000";
+  final String baseUrl = "https://flyingstone.me/boostme";
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static Future<String> signUpUser({
@@ -85,7 +85,7 @@ class AuthMethods {
 
   static Future<List<model.User>> fetchUsers() async {
     Dio dio = Dio();
-    const String baseUrl = "https://localhost:4000";
+    const String baseUrl = "https://flyingstone.me/boostme";
     try {
       final response = await dio.get('$baseUrl/api/users');
       if (response.statusCode == 200) {
@@ -103,7 +103,7 @@ class AuthMethods {
 
   static Future<model.User> fetchUserById(String id) async {
     Dio dio = Dio();
-    const String baseUrl = "https://localhost:4000";
+    const String baseUrl = "https://flyingstone.me/boostme";
     try {
       print("🔓 Fetching user with ID: $id");
       final response = await dio.get('$baseUrl/api/users/$id');
@@ -121,7 +121,7 @@ class AuthMethods {
 
   static Future<void> createUser(model.User user) async {
     Dio dio = Dio();
-    const String baseUrl = "https://localhost:4000";
+    const String baseUrl = "https://flyingstone.me/boostme";
     try {
       final response = await dio.post(
         '$baseUrl/api/users',
@@ -137,7 +137,7 @@ class AuthMethods {
 
   static Future<void> updateUser(String id, model.User user) async {
     Dio dio = Dio();
-    const String baseUrl = "https://localhost:4000";
+    const String baseUrl = "https://flyingstone.me/boostme";
     try {
       final response = await dio.put(
         '$baseUrl/api/users/$id',
@@ -153,7 +153,7 @@ class AuthMethods {
 
   static Future<void> deleteUser(String id) async {
     Dio dio = Dio();
-    const String baseUrl = "https://localhost:4000";
+    const String baseUrl = "https://flyingstone.me/boostme";
     try {
       final response = await dio.delete('$baseUrl/api/users/$id');
       if (response.statusCode != 200) {
