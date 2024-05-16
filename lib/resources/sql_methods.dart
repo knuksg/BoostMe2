@@ -207,7 +207,7 @@ class SqlMethods {
   static Future<List<Post>> fetchPosts() async {
     print('🔓 Fetching posts');
     final dio = Dio();
-    const String baseUrl = "https://localhost:4000";
+    const String baseUrl = "https://flyingstone.me/boostme";
     try {
       final response = await dio.get('$baseUrl/api/posts');
       if (response.statusCode == 200) {
