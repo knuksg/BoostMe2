@@ -116,9 +116,10 @@ class AuthMethods {
     print("signInWithGoogle called");
     String res = "Some error occurred";
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      print("Google user?");
-      print("Google user: $googleUser");
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      print("GoogleSignIn called");
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      print("GoogleSignInAccount called");
 
       if (googleUser == null) {
         res = "Sign in aborted by user";
@@ -131,7 +132,6 @@ class AuthMethods {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      print("Google credential: $credential");
 
       // 파이어베이스에 사용자 등록
       UserCredential userCredential =
