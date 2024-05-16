@@ -1,9 +1,12 @@
+import 'package:boostme2/models/post.dart';
 import 'package:boostme2/resources/auth_methods.dart';
 import 'package:boostme2/resources/sql_methods.dart';
 import 'package:boostme2/screens/user/login_screen.dart';
 import 'package:boostme2/utils/colors.dart';
+import 'package:boostme2/utils/global_variables.dart';
 import 'package:boostme2/utils/utils.dart';
 import 'package:boostme2/widgets/follow_button.dart';
+import 'package:boostme2/widgets/post_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:boostme2/models/user.dart' as model;
@@ -50,6 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return isLoading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -119,42 +123,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const Divider(),
-                // FutureBuilder(
-                //   future: FirebaseFirestore.instance
-                //       .collection('posts')
-                //       .where('uid', isEqualTo: widget.uid)
-                //       .get(),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.waiting) {
-                //       return const Center(
-                //         child: CircularProgressIndicator(),
-                //       );
-                //     }
+                FutureBuilder<List<Post>>(
+                  future: SqlMethods.fetchPosts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Failed to load posts: ${snapshot.error}'),
+                      );
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                        child: Text('No posts found'),
+                      );
+                    } else if (snapshot.hasData) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (ctx, index) => Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: width > webScreenSize ? width * 0.3 : 0,
+                            vertical: width > webScreenSize ? 15 : 0,
+                          ),
+                          child: PostCard(
+                            post: snapshot.data![index],
+                          ),
+                        ),
+                      );
+                    }
 
-                //     return GridView.builder(
-                //       shrinkWrap: true,
-                //       itemCount: (snapshot.data! as dynamic).docs.length,
-                //       gridDelegate:
-                //           const SliverGridDelegateWithFixedCrossAxisCount(
-                //         crossAxisCount: 3,
-                //         crossAxisSpacing: 5,
-                //         mainAxisSpacing: 1.5,
-                //         childAspectRatio: 1,
-                //       ),
-                //       itemBuilder: (context, index) {
-                //         DocumentSnapshot snap =
-                //             (snapshot.data! as dynamic).docs[index];
-
-                //         return Container(
-                //           child: Image(
-                //             image: NetworkImage(snap['postUrl']),
-                //             fit: BoxFit.cover,
-                //           ),
-                //         );
-                //       },
-                //     );
-                //   },
-                // )
+                    return const SizedBox();
+                  },
+                ),
               ],
             ),
           );
