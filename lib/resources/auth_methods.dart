@@ -105,9 +105,7 @@ class AuthMethods {
     Dio dio = Dio();
     const String baseUrl = "https://flyingstone.me/boostme";
     try {
-      print("🔓 Fetching user with ID: $id");
       final response = await dio.get('$baseUrl/api/users/$id');
-      print(response.data);
       if (response.statusCode == 200) {
         return model.User.fromJson(response.data);
       } else {
