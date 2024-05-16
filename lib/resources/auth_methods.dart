@@ -122,7 +122,7 @@ class AuthMethods {
           'https://www.googleapis.com/auth/contacts.readonly',
         ],
       );
-      print("GoogleSignIn called");
+      print("GoogleSignIn called $googleSignIn");
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       print("GoogleSignInAccount called");
 

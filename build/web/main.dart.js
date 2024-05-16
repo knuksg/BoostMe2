@@ -30706,7 +30706,7 @@ s=p}while(true)switch(s){case 0:A.c3("signInWithGoogle called")
 n="Some error occurred"
 p=4
 m=A.aLD(A.b(["email","https://www.googleapis.com/auth/contacts.readonly"],t.s))
-A.c3("GoogleSignIn called")
+A.c3("GoogleSignIn called "+A.h(m))
 s=7
 return A.A(m.i8(),$async$uh)
 case 7:l=a4
