@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const Divider(),
                 FutureBuilder<List<Post>>(
-                  future: SqlMethods.fetchPosts(),
+                  future: SqlMethods.fetchPostsByUid(widget.uid),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(

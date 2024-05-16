@@ -74,17 +74,24 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
           ),
           IconButton(
             icon: Icon(
-              Icons.favorite,
+              Icons.fitness_center,
               color: _page == 3 ? primaryColor : secondaryColor,
             ),
             onPressed: () => navigationTapped(3),
           ),
           IconButton(
             icon: Icon(
-              Icons.person,
+              Icons.face_2,
               color: _page == 4 ? primaryColor : secondaryColor,
             ),
             onPressed: () => navigationTapped(4),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.person,
+              color: _page == 5 ? primaryColor : secondaryColor,
+            ),
+            onPressed: () => navigationTapped(5),
           ),
         ],
       ),
