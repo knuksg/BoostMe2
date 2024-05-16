@@ -205,17 +205,14 @@ class SqlMethods {
   // }
 
   static Future<List<Post>> fetchPosts() async {
-    print('🔓 Fetching posts');
     final dio = Dio();
     const String baseUrl = "https://flyingstone.me/boostme";
     try {
       final response = await dio.get('$baseUrl/api/posts');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
-        print("data: $data");
         List<Post> posts =
             data.map((userJson) => Post.fromJson(userJson)).toList();
-        print("posts: $posts");
         return posts;
       } else {
         throw Exception('Failed to load posts');
