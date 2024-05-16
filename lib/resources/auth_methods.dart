@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
@@ -122,7 +124,9 @@ class AuthMethods {
           'https://www.googleapis.com/auth/contacts.readonly',
         ],
       );
-      print("GoogleSignIn called $googleSignIn");
+      print("GoogleSignIn called");
+      print(googleSignIn.toString());
+      print(googleSignIn.toJSBox);
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       print("GoogleSignInAccount called");
 
