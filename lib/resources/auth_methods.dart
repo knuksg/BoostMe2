@@ -113,9 +113,11 @@ class AuthMethods {
   }
 
   static Future<String> signInWithGoogle() async {
+    print("signInWithGoogle called");
     String res = "Some error occurred";
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      print("Google user: $googleUser");
 
       if (googleUser == null) {
         res = "Sign in aborted by user";
@@ -128,6 +130,7 @@ class AuthMethods {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+      print("Google credential: $credential");
 
       // 파이어베이스에 사용자 등록
       UserCredential userCredential =

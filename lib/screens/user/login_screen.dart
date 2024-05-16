@@ -76,12 +76,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginUserWithGoogle() async {
+    print("Login with Google");
     setState(() {
       _isLoading = true;
     });
 
     try {
       String res = await AuthMethods.signInWithGoogle();
+      print("Login result: $res");
       if (res == 'success') {
         await UserProvider().refreshUser();
         if (mounted) {
@@ -228,7 +230,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   _loginUserWithGoogle();
                 },
-              )
+              ),
+              Flexible(
+                flex: 2,
+                child: Container(),
+              ),
             ],
           ),
         ),
