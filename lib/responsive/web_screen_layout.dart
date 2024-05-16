@@ -1,3 +1,4 @@
+import 'package:boostme2/resources/auth_methods.dart';
 import 'package:boostme2/utils/colors.dart';
 import 'package:boostme2/utils/global_variables.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +93,13 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
               color: _page == 5 ? primaryColor : secondaryColor,
             ),
             onPressed: () => navigationTapped(5),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.logout,
+              color: _page == 6 ? primaryColor : secondaryColor,
+            ),
+            onPressed: () => AuthMethods.signOut(),
           ),
         ],
       ),

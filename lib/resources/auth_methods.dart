@@ -80,8 +80,36 @@ class AuthMethods {
     return res;
   }
 
-  static Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+  // 범용 로그아웃 함수
+  static Future<String> signOut() async {
+    try {
+      // 파이어베이스 현재 로그인한 유저 정보 가져오기
+      User? currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser != null) {
+        // 파이어베이스에서 사용자가 사용하는 로그인 방식 확인
+        List<UserInfo> providerData = currentUser.providerData;
+
+        // 각각의 로그인 방식에 대한 로그아웃 처리
+        for (var userInfo in providerData) {
+          switch (userInfo.providerId) {
+            case 'google.com':
+              await GoogleSignIn().signOut();
+              break;
+
+            // 추가 가능한 다른 소셜 로그인 처리
+            default:
+              break;
+          }
+        }
+      }
+
+      // 파이어베이스 로그아웃 실행
+      await FirebaseAuth.instance.signOut();
+      return "All users signed out successfully";
+    } catch (e) {
+      return "Error signing out: $e";
+    }
   }
 
   static Future<String> signInWithGoogle() async {
@@ -128,12 +156,6 @@ class AuthMethods {
       return "Unknown error occurred: $err";
     }
     return res;
-  }
-
-  // 구글 로그아웃
-  static Future<String> signOutGoogle() async {
-    await GoogleSignIn().signOut();
-    return "User signed out successfully";
   }
 
   static Future<List<model.User>> fetchUsers() async {
