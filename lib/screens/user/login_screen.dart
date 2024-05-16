@@ -10,6 +10,7 @@ import 'package:boostme2/utils/utils.dart';
 import 'package:boostme2/widgets/text_field_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -42,6 +43,45 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       String res =
           await AuthMethods.loginUser(email: email, password: password);
+      if (res == 'success') {
+        await UserProvider().refreshUser();
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                ),
+              ),
+              (route) => false);
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+        print("Login failed: $res");
+        showSnackBar(context, res);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      print("Login failed with exception: $e");
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void _loginUserWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      String res = await AuthMethods.signInWithGoogle();
       if (res == 'success') {
         await UserProvider().refreshUser();
         if (mounted) {
@@ -174,6 +214,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 2,
                 child: Container(),
               ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: const Text(
+                  'or continue with',
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              SignInButton(
+                Buttons.google,
+                onPressed: () {
+                  _loginUserWithGoogle();
+                },
+              )
             ],
           ),
         ),

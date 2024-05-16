@@ -1,8 +1,9 @@
-import 'dart:typed_data';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:boostme2/resources/storage_method.dart';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:boostme2/resources/storage_method.dart';
 import 'package:boostme2/models/user.dart' as model;
 
 class AuthMethods {
@@ -81,6 +82,58 @@ class AuthMethods {
 
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  static Future<String> signInWithGoogle() async {
+    String res = "Some error occurred";
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        res = "Sign in aborted by user";
+        return res;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // 파이어베이스에 사용자 등록
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      User? user = userCredential.user;
+
+      if (user != null) {
+        // 신규 유저인지 확인
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          // 신규 유저 데이터베이스에 등록
+          String photoUrl = user.photoURL ??
+              "gs://boostme-147c6.appspot.com/profilePics/default.jpg";
+          model.User newUser = model.User(
+            username: user.displayName ?? "NoName",
+            uid: user.uid,
+            photoUrl: photoUrl,
+            email: user.email ?? "NoEmail",
+            bio: "New user from Google", // 예시로 기본 bio 설정
+          );
+          await createUser(newUser);
+        }
+        res = "success";
+      }
+    } catch (err) {
+      print("Exception during Google sign in: $err");
+      return "Unknown error occurred: $err";
+    }
+    return res;
+  }
+
+  // 구글 로그아웃
+  static Future<String> signOutGoogle() async {
+    await GoogleSignIn().signOut();
+    return "User signed out successfully";
   }
 
   static Future<List<model.User>> fetchUsers() async {
