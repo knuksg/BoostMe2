@@ -117,6 +117,7 @@ class AuthMethods {
     String res = "Some error occurred";
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      print("Google user?");
       print("Google user: $googleUser");
 
       if (googleUser == null) {
