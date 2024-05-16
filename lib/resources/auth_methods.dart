@@ -116,14 +116,20 @@ class AuthMethods {
     print("signInWithGoogle called");
     String res = "Some error occurred";
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'https://www.googleapis.com/auth/contacts.readonly',
+        ],
+      );
       print("GoogleSignIn called");
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       print("GoogleSignInAccount called");
 
       if (googleUser == null) {
-        res = "Sign in aborted by user";
-        return res;
+        print(
+            "Google sign in returned null, check configuration or user cancelled.");
+        return "Sign in failed or cancelled by user.";
       }
 
       final GoogleSignInAuthentication googleAuth =
