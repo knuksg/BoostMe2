@@ -88,10 +88,12 @@ class AuthMethods {
     try {
       // 파이어베이스 현재 로그인한 유저 정보 가져오기
       User? currentUser = FirebaseAuth.instance.currentUser;
+      print('Current user: $currentUser');
 
       if (currentUser != null) {
         // 파이어베이스에서 사용자가 사용하는 로그인 방식 확인
         List<UserInfo> providerData = currentUser.providerData;
+        print('Provider data: $providerData');
 
         // 각각의 로그인 방식에 대한 로그아웃 처리
         for (var userInfo in providerData) {
@@ -109,6 +111,7 @@ class AuthMethods {
 
       // 파이어베이스 로그아웃 실행
       await FirebaseAuth.instance.signOut();
+      print('Signed out successfully');
       return "All users signed out successfully";
     } catch (e) {
       return "Error signing out: $e";
