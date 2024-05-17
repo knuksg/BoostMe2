@@ -116,8 +116,11 @@ class AuthMethods {
 
   static Future<String> signInWithGoogle() async {
     String res = "Some error occurred";
+    final GoogleAuthProvider googleProvider = GoogleAuthProvider();
     try {
       print("Sign in with Google");
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithPopup(googleProvider);
       final GoogleSignIn googleSignIn = GoogleSignIn();
       print("Google sign in initialized");
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
