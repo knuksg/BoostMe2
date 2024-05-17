@@ -95,18 +95,18 @@ class AuthMethods {
         List<UserInfo> providerData = currentUser.providerData;
         print('Provider data: $providerData');
 
-        // 각각의 로그인 방식에 대한 로그아웃 처리
-        for (var userInfo in providerData) {
-          switch (userInfo.providerId) {
-            case 'google.com':
-              await GoogleSignIn().signOut();
-              break;
+        // // 각각의 로그인 방식에 대한 로그아웃 처리
+        // for (var userInfo in providerData) {
+        //   switch (userInfo.providerId) {
+        //     case 'google.com':
+        //       await FirebaseAuth.instance.
+        //       break;
 
-            // 추가 가능한 다른 소셜 로그인 처리
-            default:
-              break;
-          }
-        }
+        //     // 추가 가능한 다른 소셜 로그인 처리
+        //     default:
+        //       break;
+        //   }
+        // }
       }
 
       // 파이어베이스 로그아웃 실행
