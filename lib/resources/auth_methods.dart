@@ -120,7 +120,8 @@ class AuthMethods {
       print("Sign in with Google");
       final GoogleSignIn googleSignIn = GoogleSignIn();
       print("Google sign in initialized");
-      // final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      print("Google user: $googleUser");
 
       // if (googleUser == null) {
       //   return "Sign in failed or cancelled by user.";
