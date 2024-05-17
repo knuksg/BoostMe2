@@ -117,12 +117,12 @@ class AuthMethods {
   static Future<String> signInWithGoogle() async {
     String res = "Some error occurred";
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      // final GoogleSignIn googleSignIn = GoogleSignIn();
+      // final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      if (googleUser == null) {
-        return "Sign in failed or cancelled by user.";
-      }
+      // if (googleUser == null) {
+      //   return "Sign in failed or cancelled by user.";
+      // }
 
       // final GoogleSignInAuthentication googleAuth =
       //     await googleUser.authentication;
