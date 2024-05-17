@@ -117,7 +117,9 @@ class AuthMethods {
   static Future<String> signInWithGoogle() async {
     String res = "Some error occurred";
     try {
-      // final GoogleSignIn googleSignIn = GoogleSignIn();
+      print("Sign in with Google");
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      print("Google sign in initialized");
       // final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       // if (googleUser == null) {

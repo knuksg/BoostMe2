@@ -76,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginUserWithGoogle() async {
-    print("Login with Google");
     setState(() {
       _isLoading = true;
     });
