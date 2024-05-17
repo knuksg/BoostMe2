@@ -1,5 +1,6 @@
 import 'dart:js_interop';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
@@ -116,51 +117,52 @@ class AuthMethods {
 
   static Future<String> signInWithGoogle() async {
     String res = "Some error occurred";
-    final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+    late UserCredential userCredential;
     try {
-      print("Sign in with Google");
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithPopup(googleProvider);
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      print("Google sign in initialized");
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (kIsWeb) {
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        userCredential =
+            await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      } else {
+        final GoogleSignIn googleSignIn = GoogleSignIn();
+        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      if (googleUser == null) {
-        print("Sign in failed or cancelled by user.");
-        return "Sign in failed or cancelled by user.";
+        if (googleUser == null) {
+          print("Sign in failed or cancelled by user.");
+          return "Sign in failed or cancelled by user.";
+        }
+
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        // 파이어베이스에 사용자 등록
+        userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
       }
 
-      print("Google user: $googleUser");
+      User? user = userCredential.user;
 
-      // final GoogleSignInAuthentication googleAuth =
-      //     await googleUser.authentication;
-      // final AuthCredential credential = GoogleAuthProvider.credential(
-      //   accessToken: googleAuth.accessToken,
-      //   idToken: googleAuth.idToken,
-      // );
-
-      // // 파이어베이스에 사용자 등록
-      // UserCredential userCredential =
-      //     await FirebaseAuth.instance.signInWithCredential(credential);
-      // User? user = userCredential.user;
-
-      // if (user != null) {
-      //   // 신규 유저인지 확인
-      //   if (userCredential.additionalUserInfo!.isNewUser) {
-      //     // 신규 유저 데이터베이스에 등록
-      //     String photoUrl = user.photoURL ??
-      //         "gs://boostme-147c6.appspot.com/profilePics/default.jpg";
-      //     model.User newUser = model.User(
-      //       username: user.displayName ?? "NoName",
-      //       uid: user.uid,
-      //       photoUrl: photoUrl,
-      //       email: user.email ?? "NoEmail",
-      //       bio: "New user from Google", // 예시로 기본 bio 설정
-      //     );
-      //     await createUser(newUser);
-      //   }
-      //   res = "success";
-      // }
+      if (user != null) {
+        // 신규 유저인지 확인
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          // 신규 유저 데이터베이스에 등록
+          String photoUrl = user.photoURL ??
+              "gs://boostme-147c6.appspot.com/profilePics/default.jpg";
+          model.User newUser = model.User(
+            username: user.displayName ?? "NoName",
+            uid: user.uid,
+            photoUrl: photoUrl,
+            email: user.email ?? "NoEmail",
+            bio: "New user from Google", // 예시로 기본 bio 설정
+          );
+          await createUser(newUser);
+        }
+        res = "success";
+      }
     } catch (err) {
       print("Exception during Google sign in: $err");
       return "Unknown error occurred: $err";
