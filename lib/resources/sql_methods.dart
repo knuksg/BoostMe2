@@ -204,16 +204,24 @@ class SqlMethods {
   //   }
   // }
 
-  static Future<List<Post>> fetchPosts() async {
+  static Future<Map<String, dynamic>> fetchPosts(int page, int limit) async {
     final dio = Dio();
     const String baseUrl = "https://flyingstone.me/boostme";
     try {
-      final response = await dio.get('$baseUrl/api/posts');
+      final int offset = (page - 1) * limit;
+      final response = await dio.get('$baseUrl/api/posts', queryParameters: {
+        'limit': limit,
+        'offset': offset,
+      });
       if (response.statusCode == 200) {
-        List<dynamic> data = response.data;
+        Map<String, dynamic> data = response.data;
+        List<dynamic> postsData = data['posts'];
         List<Post> posts =
-            data.map((userJson) => Post.fromJson(userJson)).toList();
-        return posts;
+            postsData.map((postJson) => Post.fromJson(postJson)).toList();
+        return {
+          'total': data['total'],
+          'posts': posts,
+        };
       } else {
         throw Exception('Failed to load posts');
       }
@@ -223,16 +231,26 @@ class SqlMethods {
     }
   }
 
-  static Future<List<Post>> fetchPostsByUid(String uid) async {
+  static Future<Map<String, dynamic>> fetchPostsByUid(
+      String uid, int page, int limit) async {
     final dio = Dio();
     const String baseUrl = "https://flyingstone.me/boostme";
     try {
-      final response = await dio.get('$baseUrl/api/posts/user/$uid');
+      final int offset = (page - 1) * limit;
+      final response =
+          await dio.get('$baseUrl/api/posts/user/$uid', queryParameters: {
+        'limit': limit,
+        'offset': offset,
+      });
       if (response.statusCode == 200) {
-        List<dynamic> data = response.data;
+        Map<String, dynamic> data = response.data;
+        List<dynamic> postsData = data['posts'];
         List<Post> posts =
-            data.map((userJson) => Post.fromJson(userJson)).toList();
-        return posts;
+            postsData.map((postJson) => Post.fromJson(postJson)).toList();
+        return {
+          'total': data['total'],
+          'posts': posts,
+        };
       } else {
         throw Exception('Failed to load posts');
       }

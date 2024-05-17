@@ -5,7 +5,6 @@ import 'package:boostme2/utils/colors.dart';
 import 'package:boostme2/utils/global_variables.dart';
 import 'package:boostme2/utils/utils.dart';
 import 'package:boostme2/widgets/post_card.dart';
-
 import 'package:flutter/material.dart';
 import 'package:boostme2/models/user.dart' as model;
 
@@ -19,25 +18,35 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late model.User user;
-  int postLen = 0;
   bool isLoading = false;
-  List<Post>? posts; // Adding a state variable to hold posts
+  List<Post> posts = []; // State variable to hold posts
+  bool _isLoadingMore = false;
+  bool _hasMore = true;
+  int _page = 1;
+  final int _limit = 10;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     getData();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          !_isLoadingMore &&
+          _hasMore) {
+        _fetchMorePosts();
+      }
+    });
   }
 
-  getData() async {
+  Future<void> getData() async {
     setState(() {
       isLoading = true;
     });
     try {
       user = await AuthMethods.fetchUserById(widget.uid);
-      posts =
-          await SqlMethods.fetchPostsByUid(widget.uid); // Fetch and store posts
-      postLen = posts?.length ?? 0;
+      await _fetchMorePosts();
     } catch (e) {
       showSnackBar(context, e.toString());
     } finally {
@@ -45,6 +54,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
         isLoading = false;
       });
     }
+  }
+
+  Future<void> _fetchMorePosts() async {
+    if (_isLoadingMore) return;
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    try {
+      Map<String, dynamic> result =
+          await SqlMethods.fetchPostsByUid(widget.uid, _page, _limit);
+      List<Post> fetchedPosts = result['posts'];
+      int total = result['total'];
+
+      setState(() {
+        _page++;
+        posts.addAll(fetchedPosts);
+        _hasMore = posts.length < total;
+      });
+    } catch (e) {
+      print('Error fetching posts: $e');
+    } finally {
+      setState(() {
+        _isLoadingMore = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -59,10 +100,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               centerTitle: false,
             ),
             body: ListView(
+              controller: _scrollController,
               children: [
                 profileInfo(),
                 const Divider(),
-                buildPostsList(width), // Refactor out posts list building
+                buildPostsList(width),
+                if (_isLoadingMore)
+                  const Center(child: CircularProgressIndicator()),
               ],
             ),
           );
@@ -91,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [buildStatColumn(postLen, "posts")],
+                  children: [buildStatColumn(posts.length, "posts")],
                 ),
               ],
             ),
@@ -105,19 +149,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Text(text, style: TextStyle(fontWeight: weight)),
       );
 
-  Widget buildPostsList(double width) => posts == null || posts!.isEmpty
+  Widget buildPostsList(double width) => posts.isEmpty
       ? const Center(child: Text('No posts found'))
       : ListView.builder(
           shrinkWrap: true, // Important to prevent nested scrolling issues
           physics:
               const NeverScrollableScrollPhysics(), // Disables scrolling for nested ListView
-          itemCount: posts!.length,
+          itemCount: posts.length,
           itemBuilder: (ctx, index) => Container(
             margin: EdgeInsets.symmetric(
               horizontal: width > webScreenSize ? width * 0.3 : 0,
               vertical: width > webScreenSize ? 15 : 0,
             ),
-            child: PostCard(post: posts![index]),
+            child: PostCard(post: posts[index]),
           ),
         );
 }
