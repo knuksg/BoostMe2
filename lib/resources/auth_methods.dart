@@ -115,56 +115,44 @@ class AuthMethods {
   }
 
   static Future<String> signInWithGoogle() async {
-    print("signInWithGoogle called");
     String res = "Some error occurred";
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        scopes: [
-          'email',
-          'https://www.googleapis.com/auth/contacts.readonly',
-        ],
-      );
-      print("GoogleSignIn called");
-      print(googleSignIn.toString());
-      print(googleSignIn.toJSBox.toString());
+      final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      print("GoogleSignInAccount called");
 
       if (googleUser == null) {
-        print(
-            "Google sign in returned null, check configuration or user cancelled.");
         return "Sign in failed or cancelled by user.";
       }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+      // final GoogleSignInAuthentication googleAuth =
+      //     await googleUser.authentication;
+      // final AuthCredential credential = GoogleAuthProvider.credential(
+      //   accessToken: googleAuth.accessToken,
+      //   idToken: googleAuth.idToken,
+      // );
 
-      // 파이어베이스에 사용자 등록
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      User? user = userCredential.user;
+      // // 파이어베이스에 사용자 등록
+      // UserCredential userCredential =
+      //     await FirebaseAuth.instance.signInWithCredential(credential);
+      // User? user = userCredential.user;
 
-      if (user != null) {
-        // 신규 유저인지 확인
-        if (userCredential.additionalUserInfo!.isNewUser) {
-          // 신규 유저 데이터베이스에 등록
-          String photoUrl = user.photoURL ??
-              "gs://boostme-147c6.appspot.com/profilePics/default.jpg";
-          model.User newUser = model.User(
-            username: user.displayName ?? "NoName",
-            uid: user.uid,
-            photoUrl: photoUrl,
-            email: user.email ?? "NoEmail",
-            bio: "New user from Google", // 예시로 기본 bio 설정
-          );
-          await createUser(newUser);
-        }
-        res = "success";
-      }
+      // if (user != null) {
+      //   // 신규 유저인지 확인
+      //   if (userCredential.additionalUserInfo!.isNewUser) {
+      //     // 신규 유저 데이터베이스에 등록
+      //     String photoUrl = user.photoURL ??
+      //         "gs://boostme-147c6.appspot.com/profilePics/default.jpg";
+      //     model.User newUser = model.User(
+      //       username: user.displayName ?? "NoName",
+      //       uid: user.uid,
+      //       photoUrl: photoUrl,
+      //       email: user.email ?? "NoEmail",
+      //       bio: "New user from Google", // 예시로 기본 bio 설정
+      //     );
+      //     await createUser(newUser);
+      //   }
+      //   res = "success";
+      // }
     } catch (err) {
       print("Exception during Google sign in: $err");
       return "Unknown error occurred: $err";
