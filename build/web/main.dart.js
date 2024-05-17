@@ -30712,7 +30712,7 @@ d=m
 if(t.e.b(d))A.P("Attempting to box non-Dart object.")
 c={}
 c[$.aEN()]=d
-A.bX(c)
+A.bX(String(c))
 s=7
 return A.A(m.i8(),$async$uh)
 case 7:l=a5

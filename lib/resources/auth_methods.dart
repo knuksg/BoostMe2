@@ -126,7 +126,7 @@ class AuthMethods {
       );
       print("GoogleSignIn called");
       print(googleSignIn.toString());
-      print(googleSignIn.toJSBox);
+      print(googleSignIn.toJSBox.toString());
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       print("GoogleSignInAccount called");
 
