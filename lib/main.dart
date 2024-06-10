@@ -11,6 +11,11 @@ import 'presentation/viewmodels/auth_viewmodel.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+
+  // 환경 변수가 제대로 불러와졌는지 테스트
+  String? openaiApiKey = dotenv.env['OPENAI_API_KEY'];
+  print('OPENAI_API_KEY: $openaiApiKey');
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
