@@ -47725,7 +47725,7 @@ case 3:m=b
 if(m==null)throw A.c(A.c2("User not authenticated"))
 o=t.N
 s=4
-return A.R(p.a.Qw("GET",A.dd("https://flyingstone.me/boostme/api/users/me"),A.av(["Authorization","Bearer "+m],o,o)),$async$jR)
+return A.R(p.a.Qw("GET",A.dd("https://flyingstone.me/boostme/api/users"),A.av(["Authorization","Bearer "+m],o,o)),$async$jR)
 case 4:n=b
 if(n.b===200){q=B.b4.ef(0,A.auo(A.atr(n.e).c.a.h(0,"charset")).ef(0,n.w))
 s=1

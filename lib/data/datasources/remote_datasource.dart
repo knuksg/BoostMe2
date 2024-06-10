@@ -23,7 +23,7 @@ class RemoteDataSource {
     }
 
     final response = await client.get(
-      Uri.parse('${AppConstants.apiUrl}/users/me'),
+      Uri.parse('${AppConstants.apiUrl}/users'),
       headers: {
         'Authorization': 'Bearer $idToken',
       },
@@ -78,7 +78,7 @@ class RemoteDataSource {
     }
 
     final response = await client.put(
-      Uri.parse('${AppConstants.apiUrl}/users/me'),
+      Uri.parse('${AppConstants.apiUrl}/users'),
       headers: {
         'Authorization': 'Bearer $idToken',
         'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ class RemoteDataSource {
     }
 
     final response = await client.delete(
-      Uri.parse('${AppConstants.apiUrl}/users/me'),
+      Uri.parse('${AppConstants.apiUrl}/users'),
       headers: {
         'Authorization': 'Bearer $idToken',
       },
