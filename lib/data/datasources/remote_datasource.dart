@@ -17,7 +17,9 @@ class RemoteDataSource {
   }
 
   Future<Map<String, dynamic>> getUser() async {
+    print('Getting user info');
     final idToken = await _getIdToken();
+    print('ID Token: $idToken');
     if (idToken == null) {
       throw Exception('User not authenticated');
     }
