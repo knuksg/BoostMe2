@@ -11,7 +11,9 @@ import 'presentation/viewmodels/auth_viewmodel.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: "dotenv");
+  await dotenv.load(fileName: ".env");
+
+  print('Loaded API_URL: ${dotenv.env['API_URL']}');
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
