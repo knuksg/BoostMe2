@@ -18,7 +18,7 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
   final List<Map<String, String>> _messages = [];
   final TextEditingController _textController = TextEditingController();
   final OpenAIClient _openAIClient =
-      OpenAIClient(AppConstants.apiKey); // OpenAI API 키를 여기에 입력
+      OpenAIClient(dotenv.env['OPENAI_API_KEY']!); // OpenAI API 키를 여기에 입력
   bool _inputDisabled = false;
 
   @override
