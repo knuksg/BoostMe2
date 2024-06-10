@@ -43,6 +43,7 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
     // OpenAI API 클라이언트 초기화
     try {
       final openaiApiKey = dotenv.env['OPENAI_API_KEY'];
+      print("OPENAI_API_KEY: $openaiApiKey");
       if (openaiApiKey != null) {
         _openAIClient = OpenAIClient(openaiApiKey);
       } else {
