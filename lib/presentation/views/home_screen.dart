@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   void _onItemTapped(int index) {
-    print("Selected index: $index");
     setState(() {
       _selectedIndex = index;
     });

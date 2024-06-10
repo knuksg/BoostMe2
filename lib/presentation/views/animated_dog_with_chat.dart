@@ -23,6 +23,7 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
 
   @override
   void initState() {
+    print("initState() called");
     super.initState();
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
