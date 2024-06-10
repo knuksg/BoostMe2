@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:boostme2/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,13 @@ import 'presentation/viewmodels/auth_viewmodel.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+
+  // 파일 존재 여부 확인
+  if (File('.env').existsSync()) {
+    print('.env file exists');
+  } else {
+    print('.env file does not exist');
+  }
 
   // 환경 변수가 제대로 불러와졌는지 테스트
   String? openaiApiKey = dotenv.env['OPENAI_API_KEY'];
