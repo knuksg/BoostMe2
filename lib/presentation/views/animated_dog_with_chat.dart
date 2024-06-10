@@ -55,6 +55,12 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
         "content": "OpenAI API 키를 찾을 수 없습니다. 환경 변수가 올바르게 설정되었는지 확인하세요."
       });
     }
+
+    // .env 파일의 모든 키와 값을 출력
+    print('Loaded environment variables:');
+    dotenv.env.forEach((key, value) {
+      print('$key: $value');
+    });
   }
 
   @override
