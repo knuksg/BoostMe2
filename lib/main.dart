@@ -14,7 +14,22 @@ void main() async {
   String envFilePath =
       '/home/talk_flyingstone/flutterWork/boostme_flutter/.env';
 
-  await dotenv.load(fileName: envFilePath);
+  try {
+    // dotenv 로드 시도
+    await dotenv.load(fileName: envFilePath);
+    print('.env file loaded successfully.');
+  } catch (e) {
+    // dotenv 로드 실패 시
+    print('Failed to load .env file: $e');
+  }
+
+  // 환경 변수가 제대로 불러와졌는지 테스트
+  String? openaiApiKey = dotenv.env['OPENAI_API_KEY'];
+  if (openaiApiKey == null) {
+    print('OPENAI_API_KEY not found in .env file.');
+  } else {
+    print('OPENAI_API_KEY: $openaiApiKey');
+  }
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
