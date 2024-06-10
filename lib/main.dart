@@ -10,7 +10,11 @@ import 'presentation/viewmodels/auth_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
+
+  String envFilePath =
+      '/home/talk_flyingstone/flutterWork/boostme_flutter/.env';
+
+  await dotenv.load(fileName: envFilePath);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
