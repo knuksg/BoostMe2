@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:boostme2/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,14 @@ import 'presentation/viewmodels/auth_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Loading from a static string.
+  dotenv.testLoad(fileInput: '''FOO=foo
+BAR=bar
+''');
+
+// Loading from a file synchronously.
+  dotenv.testLoad(fileInput: File('assets/.env').readAsStringSync());
 
   await dotenv.load(fileName: "assets/.env");
 
