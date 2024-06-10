@@ -16,10 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   final List<Destination> _destinations = [
-    const Destination(
-        title: 'Home',
-        icon: Icons.home,
-        widget: Center(child: Text('Home Screen'))),
+    const Destination(title: 'Home', icon: Icons.home, widget: ProfileScreen()),
     const Destination(
         title: 'Profile', icon: Icons.person, widget: ProfileScreen()),
     const Destination(
