@@ -58,12 +58,13 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     });
     if (_showChat) {
       _controller!.forward();
-      // 스크롤을 가장 최신 메시지로 이동
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent + 200,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
     } else {
       _controller!.reverse();
     }
@@ -122,11 +123,13 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
         }
 
         // 스크롤을 가장 최신 메시지로 이동
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent + 200,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        });
       } catch (error) {
         setState(() {
           _messages.add({
@@ -230,6 +233,8 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                                       'Enter your message (max 500 characters)'),
                               maxLength: 500, // 텍스트 길이 제한 추가
                               enabled: !_isLoading, // 응답을 기다리는 동안 비활성화
+                              onSubmitted: (value) =>
+                                  _sendMessage(), // 엔터키를 눌렀을 때 메시지 전송
                             ),
                           ),
                           IconButton(
