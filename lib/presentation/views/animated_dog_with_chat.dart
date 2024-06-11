@@ -82,7 +82,7 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
           });
         });
       }
-
+      print("_messages: $_messages");
       _textController.clear();
     }
   }
