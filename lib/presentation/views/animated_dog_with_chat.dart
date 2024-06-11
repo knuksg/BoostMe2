@@ -1,15 +1,19 @@
+import 'dart:convert';
+
 import 'package:boostme2/core/constants/constants.dart';
 import 'package:boostme2/core/utils/chat_service.dart';
+import 'package:boostme2/presentation/viewmodels/weight_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AnimatedDogWithChat extends StatefulWidget {
+class AnimatedDogWithChat extends ConsumerStatefulWidget {
   const AnimatedDogWithChat({super.key});
 
   @override
   _AnimatedDogWithChatState createState() => _AnimatedDogWithChatState();
 }
 
-class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
+class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     with SingleTickerProviderStateMixin {
   AnimationController? _controller;
   Animation<double>? _animation;
@@ -71,18 +75,33 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
 
       try {
         final response = await _chatService.sendMessage(_messages);
-        setState(() {
+
+        // 응답이 JSON 형식인 경우 처리
+        try {
+          final jsonResponse = jsonDecode(response);
+          if (jsonResponse['function_name'] == 'create_weight' &&
+              jsonResponse['value'] != null) {
+            final weight = double.tryParse(jsonResponse['value']);
+            if (weight != null) {
+              final weightViewModel =
+                  ref.read(weightViewModelProvider.notifier);
+              await weightViewModel.addWeight(weight);
+            }
+            _messages.add(
+                {"role": "assistant", "content": jsonResponse['response']});
+          } else {
+            _messages.add({"role": "assistant", "content": response});
+          }
+        } catch (e) {
+          // 응답이 JSON 형식이 아닌 경우 처리
           _messages.add({"role": "assistant", "content": response});
-        });
+        }
       } catch (error) {
-        setState(() {
-          _messages.add({
-            "role": "assistant",
-            "content": "Sorry, I couldn't process your request."
-          });
+        _messages.add({
+          "role": "assistant",
+          "content": "Sorry, I couldn't process your request."
         });
       }
-      print("_messages: $_messages");
       _textController.clear();
     }
   }
