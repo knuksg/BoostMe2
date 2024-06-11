@@ -27,6 +27,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   bool _inputDisabled = false;
   bool _isLoading = false; // 응답을 기다리는 상태를 추가
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode(); // 입력창에 포커스를 맞추기 위한 FocusNode
 
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     _controller!.dispose();
     _textController.dispose();
     _scrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -64,6 +66,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
+        _focusNode.requestFocus(); // 채팅창을 열 때 입력창에 포커스
       });
     } else {
       _controller!.reverse();
@@ -129,6 +132,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOut,
           );
+          _focusNode.requestFocus(); // 응답이 도착했을 때 입력창에 포커스
         });
       } catch (error) {
         setState(() {
@@ -233,6 +237,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                                       'Enter your message (max 500 characters)'),
                               maxLength: 500, // 텍스트 길이 제한 추가
                               enabled: !_isLoading, // 응답을 기다리는 동안 비활성화
+                              focusNode: _focusNode, // 포커스 노드 추가
                               onSubmitted: (value) =>
                                   _sendMessage(), // 엔터키를 눌렀을 때 메시지 전송
                             ),
