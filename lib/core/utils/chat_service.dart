@@ -15,7 +15,7 @@ class ChatService {
     return null;
   }
 
-  Future<String> sendMessage(String message) async {
+  Future<String> sendMessage(List<Map<String, String>> messages) async {
     final idToken = await _getIdToken();
     if (idToken == null) {
       throw Exception('User not authenticated');
@@ -26,7 +26,7 @@ class ChatService {
         'Authorization': 'Bearer $idToken',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({'message': message}),
+      body: jsonEncode({'messages': messages}),
     );
 
     if (response.statusCode == 200) {

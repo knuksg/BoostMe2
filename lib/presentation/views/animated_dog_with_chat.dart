@@ -70,7 +70,7 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
       });
 
       try {
-        final response = await _chatService.sendMessage(_textController.text);
+        final response = await _chatService.sendMessage(_messages);
         setState(() {
           _messages.add({"role": "assistant", "content": response});
         });
