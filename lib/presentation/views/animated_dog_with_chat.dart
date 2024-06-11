@@ -1,7 +1,6 @@
-import 'package:boostme2/core/constants/constants.dart';
+import 'package:boostme2/core/utils/aws_secret_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:boostme2/core/utils/openai_api.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AnimatedDogWithChat extends StatefulWidget {
   const AnimatedDogWithChat({super.key});
@@ -42,13 +41,9 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
 
     // OpenAI API 클라이언트 초기화
     try {
-      final openaiApiKey = dotenv.env['OPENAI_API_KEY'];
+      final openaiApiKey = _getSecret("prod/BoostMe/openai");
       print("OPENAI_API_KEY: $openaiApiKey");
-      if (openaiApiKey != null) {
-        _openAIClient = OpenAIClient(openaiApiKey);
-      } else {
-        throw Exception("OPENAI_API_KEY not found");
-      }
+      _openAIClient = OpenAIClient(openaiApiKey);
     } catch (e) {
       print('Error initializing OpenAIClient: $e');
       _messages.add({
@@ -63,6 +58,10 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
     _controller!.dispose();
     _textController.dispose();
     super.dispose();
+  }
+
+  _getSecret(String secretId) async {
+    return await getSecret(secretId);
   }
 
   void _toggleChat() {

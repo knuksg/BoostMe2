@@ -2,7 +2,6 @@ import 'package:boostme2/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'presentation/views/login_screen.dart';
 import 'presentation/views/home_screen.dart';
@@ -10,11 +9,6 @@ import 'presentation/viewmodels/auth_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await dotenv.load(
-      fileName: "/home/talk_flyingstone/flutterWork/boostme_flutter/.env");
-
-  print('Loaded API_URL: ${dotenv.env['API_URL']}');
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

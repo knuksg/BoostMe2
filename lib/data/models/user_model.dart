@@ -1,4 +1,4 @@
-import 'package:boostme2/temporaries/models/user.dart';
+import 'package:boostme2/domain/entities/user.dart';
 
 class UserModel extends User {
   UserModel({
