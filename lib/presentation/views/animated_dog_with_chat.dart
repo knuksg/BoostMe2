@@ -56,6 +56,17 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     setState(() {
       _showChat = !_showChat;
     });
+    if (_showChat) {
+      _controller!.forward();
+      // 스크롤을 가장 최신 메시지로 이동
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent + 200,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    } else {
+      _controller!.reverse();
+    }
   }
 
   void _resetChat() {
@@ -112,7 +123,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
 
         // 스크롤을 가장 최신 메시지로 이동
         _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent + 100,
+          _scrollController.position.maxScrollExtent + 200,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
