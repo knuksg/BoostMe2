@@ -25,6 +25,8 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   final ChatService _chatService =
       ChatService(AppConstants.apiUrl); // Node.js 서버 URL
   bool _inputDisabled = false;
+  bool _isLoading = false; // 응답을 기다리는 상태를 추가
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -46,6 +48,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   void dispose() {
     _controller!.dispose();
     _textController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -67,6 +70,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     if (_textController.text.isNotEmpty && _textController.text.length <= 500) {
       setState(() {
         _messages.add({"role": "user", "content": _textController.text});
+        _isLoading = true; // 응답을 기다리는 상태로 변경
         if (_messages.where((message) => message['role'] == 'user').length >=
             5) {
           _inputDisabled = true;
@@ -90,24 +94,35 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
             setState(() {
               _messages.add(
                   {"role": "assistant", "content": jsonResponse['response']});
+              _isLoading = false; // 응답이 도착했으므로 상태 변경
             });
           } else {
             setState(() {
               _messages.add({"role": "assistant", "content": response});
+              _isLoading = false; // 응답이 도착했으므로 상태 변경
             });
           }
         } catch (e) {
           setState(() {
             // 응답이 JSON 형식이 아닌 경우 처리
             _messages.add({"role": "assistant", "content": response});
+            _isLoading = false; // 응답이 도착했으므로 상태 변경
           });
         }
+
+        // 스크롤을 가장 최신 메시지로 이동
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
       } catch (error) {
         setState(() {
           _messages.add({
             "role": "assistant",
             "content": "Sorry, I couldn't process your request."
           });
+          _isLoading = false; // 에러 발생 시 상태 변경
         });
       }
       _textController.clear();
@@ -166,6 +181,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                   const Divider(height: 1, color: Colors.grey),
                   Expanded(
                     child: ListView.builder(
+                      controller: _scrollController,
                       padding: const EdgeInsets.all(8.0),
                       itemCount: _messages.length,
                       itemBuilder: (context, index) {
@@ -202,11 +218,14 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                                   hintText:
                                       'Enter your message (max 500 characters)'),
                               maxLength: 500, // 텍스트 길이 제한 추가
+                              enabled: !_isLoading, // 응답을 기다리는 동안 비활성화
                             ),
                           ),
                           IconButton(
                             icon: const Icon(Icons.send),
-                            onPressed: _sendMessage,
+                            onPressed: _isLoading
+                                ? null
+                                : _sendMessage, // 응답을 기다리는 동안 비활성화
                           ),
                         ],
                       ),
