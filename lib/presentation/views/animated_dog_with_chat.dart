@@ -112,7 +112,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
 
         // 스크롤을 가장 최신 메시지로 이동
         _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
+          _scrollController.position.maxScrollExtent + 100,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
