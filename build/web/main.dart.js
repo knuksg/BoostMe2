@@ -47518,7 +47518,7 @@ A.a3n.prototype={
 wq(a){return this.YL(a)},
 YL(a){var s=0,r=A.O(t.N),q,p=this,o,n,m,l
 var $async$wq=A.I(function(b,c){if(b===1)return A.L(c,r)
-while(true)switch(s){case 0:o=A.dc(p.a+"/chat")
+while(true)switch(s){case 0:o=A.dc(p.a+"/chats")
 n=t.N
 m=A.az(["Content-Type","application/json"],n,n)
 s=3

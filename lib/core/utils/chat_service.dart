@@ -8,7 +8,7 @@ class ChatService {
 
   Future<String> sendMessage(String message) async {
     final response = await http.post(
-      Uri.parse('$serverUrl/chat'),
+      Uri.parse('$serverUrl/chats'),
       headers: {
         'Content-Type': 'application/json',
       },
