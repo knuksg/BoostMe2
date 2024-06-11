@@ -87,19 +87,27 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                   ref.read(weightViewModelProvider.notifier);
               await weightViewModel.addWeight(weight);
             }
-            _messages.add(
-                {"role": "assistant", "content": jsonResponse['response']});
+            setState(() {
+              _messages.add(
+                  {"role": "assistant", "content": jsonResponse['response']});
+            });
           } else {
-            _messages.add({"role": "assistant", "content": response});
+            setState(() {
+              _messages.add({"role": "assistant", "content": response});
+            });
           }
         } catch (e) {
-          // 응답이 JSON 형식이 아닌 경우 처리
-          _messages.add({"role": "assistant", "content": response});
+          setState(() {
+            // 응답이 JSON 형식이 아닌 경우 처리
+            _messages.add({"role": "assistant", "content": response});
+          });
         }
       } catch (error) {
-        _messages.add({
-          "role": "assistant",
-          "content": "Sorry, I couldn't process your request."
+        setState(() {
+          _messages.add({
+            "role": "assistant",
+            "content": "Sorry, I couldn't process your request."
+          });
         });
       }
       _textController.clear();
