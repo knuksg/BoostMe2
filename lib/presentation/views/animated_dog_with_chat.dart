@@ -1,6 +1,6 @@
-import 'package:boostme2/core/utils/aws_secret_manager.dart';
+import 'package:boostme2/core/constants/constants.dart';
+import 'package:boostme2/core/utils/chat_service.dart';
 import 'package:flutter/material.dart';
-import 'package:boostme2/core/utils/openai_api.dart';
 
 class AnimatedDogWithChat extends StatefulWidget {
   const AnimatedDogWithChat({super.key});
@@ -14,16 +14,17 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
   AnimationController? _controller;
   Animation<double>? _animation;
   bool _showChat = false;
-  final List<Map<String, String>> _messages = [];
+  final List<Map<String, String>> _messages = [
+    {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
+  ];
   final TextEditingController _textController = TextEditingController();
-  OpenAIClient? _openAIClient;
+  final ChatService _chatService =
+      ChatService(AppConstants.apiUrl); // Node.js 서버 URL
   bool _inputDisabled = false;
 
   @override
   void initState() {
     super.initState();
-    print("initState() called");
-
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -35,22 +36,6 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
       });
 
     _controller!.forward();
-
-    // 초반 메시지 추가
-    _messages.add({"role": "assistant", "content": "안녕하세요! 어떻게 도와드릴까요?"});
-
-    // OpenAI API 클라이언트 초기화
-    try {
-      final openaiApiKey = _getSecret("prod/BoostMe/openai");
-      print("OPENAI_API_KEY: $openaiApiKey");
-      _openAIClient = OpenAIClient(openaiApiKey);
-    } catch (e) {
-      print('Error initializing OpenAIClient: $e');
-      _messages.add({
-        "role": "assistant",
-        "content": "OpenAI API 키를 찾을 수 없습니다. 환경 변수가 올바르게 설정되었는지 확인하세요."
-      });
-    }
   }
 
   @override
@@ -58,10 +43,6 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
     _controller!.dispose();
     _textController.dispose();
     super.dispose();
-  }
-
-  _getSecret(String secretId) async {
-    return await getSecret(secretId);
   }
 
   void _toggleChat() {
@@ -73,9 +54,9 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
   void _resetChat() {
     setState(() {
       _messages.clear();
+      _messages.add({"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"});
       _inputDisabled = false;
     });
-    _messages.add({"role": "assistant", "content": "안녕하세요! 어떻게 도와드릴까요?"});
   }
 
   Future<void> _sendMessage() async {
@@ -88,26 +69,16 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
         }
       });
 
-      if (_openAIClient != null) {
-        try {
-          final response =
-              await _openAIClient!.sendMessage(_textController.text);
-          setState(() {
-            _messages.add({"role": "assistant", "content": response});
-          });
-        } catch (error) {
-          setState(() {
-            _messages.add({
-              "role": "assistant",
-              "content": "Sorry, I couldn't process your request."
-            });
-          });
-        }
-      } else {
+      try {
+        final response = await _chatService.sendMessage(_textController.text);
+        setState(() {
+          _messages.add({"role": "assistant", "content": response});
+        });
+      } catch (error) {
         setState(() {
           _messages.add({
             "role": "assistant",
-            "content": "OpenAI API 클라이언트가 초기화되지 않았습니다."
+            "content": "Sorry, I couldn't process your request."
           });
         });
       }
@@ -203,7 +174,7 @@ class _AnimatedDogWithChatState extends State<AnimatedDogWithChat>
                               decoration: const InputDecoration.collapsed(
                                   hintText:
                                       'Enter your message (max 500 characters)'),
-                              maxLength: 500,
+                              maxLength: 500, // 텍스트 길이 제한 추가
                             ),
                           ),
                           IconButton(
