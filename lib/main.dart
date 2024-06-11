@@ -11,7 +11,8 @@ import 'presentation/viewmodels/auth_viewmodel.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(
+      fileName: "/home/talk_flyingstone/flutterWork/boostme_flutter/.env");
 
   print('Loaded API_URL: ${dotenv.env['API_URL']}');
 

@@ -9520,7 +9520,7 @@ var $async$a0Q=A.I(function(a,b){if(a===1)return A.J(b,r)
 while(true)switch(s){case 0:if($.au==null)A.aya()
 $.au.toString
 s=2
-return A.R($.avK().Av(0,".env"),$async$a0Q)
+return A.R($.avK().Av(0,"/home/talk_flyingstone/flutterWork/boostme_flutter/.env"),$async$a0Q)
 case 2:A.kU("Loaded API_URL: "+A.f($.avK().gUc().h(0,"API_URL")))
 s=3
 return A.R(A.a7s(A.aNG()),$async$a0Q)
