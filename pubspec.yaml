@@ -46,6 +46,7 @@ dependencies:
     sign_in_button: ^3.2.0
     fl_chart: ^0.68.0
     aws_secretsmanager_api:
+    carousel_slider: ^4.2.1
 
 dev_dependencies:
     flutter_test:

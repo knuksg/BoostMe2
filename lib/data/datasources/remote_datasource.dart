@@ -1,4 +1,5 @@
 import 'package:boostme2/core/constants/constants.dart';
+import 'package:boostme2/data/models/product_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -157,6 +158,44 @@ class RemoteDataSource {
       return List<Map<String, dynamic>>.from(json.decode(response.body));
     } else {
       throw Exception('Failed to load weights');
+    }
+  }
+
+  Future<List<ProductModel>> getProducts() async {
+    final response =
+        await http.get(Uri.parse('${AppConstants.apiUrl}/products'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = json.decode(response.body);
+      return jsonResponse.map((data) => ProductModel.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load products');
+    }
+  }
+
+  Future<List<ProductModel>> getProductsByCategory(String category) async {
+    final response = await http
+        .get(Uri.parse('${AppConstants.apiUrl}/products/category/$category'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = json.decode(response.body);
+      final List<ProductModel> products =
+          jsonResponse.map((data) => ProductModel.fromJson(data)).toList();
+      return products;
+    } else {
+      throw Exception('Failed to load products by category');
+    }
+  }
+
+  Future<List<ProductModel>> getPopularProducts() async {
+    final response =
+        await http.get(Uri.parse('${AppConstants.apiUrl}/products/sales'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = json.decode(response.body);
+      return jsonResponse.map((data) => ProductModel.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load popular products');
     }
   }
 }
