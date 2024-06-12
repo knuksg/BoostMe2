@@ -10,6 +10,8 @@ class ShoppingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final productsState = ref.watch(productViewModelProvider);
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -50,52 +52,45 @@ class ShoppingScreen extends ConsumerWidget {
           _buildPopularItemsCarousel(context, ref),
           const SizedBox(height: 20),
           Expanded(
-            child: FutureBuilder<List<Product>>(
-              future: ref
-                  .read(productViewModelProvider.notifier)
-                  .loadProductsByCategory('Moisturizer'),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text(snapshot.error.toString()));
-                } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  final products = snapshot.data!;
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 0.7,
-                    ),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailScreen(
-                                imagePath: product.imageUrl,
-                                productName: product.name,
-                                productCode: product.id.toString(),
-                                price: product.price,
-                                rating: 4.5, // 임의의 값 사용
-                                description: product.description,
-                              ),
-                            ),
-                          );
-                        },
-                        child: _buildProductItem(context, product),
-                      );
-                    },
-                  );
-                } else {
+            child: productsState.when(
+              data: (products) {
+                if (products.isEmpty) {
                   return const Center(child: Text('No products found'));
                 }
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 0.7,
+                  ),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailScreen(
+                              imagePath: product.imageUrl,
+                              productName: product.name,
+                              productCode: product.id.toString(),
+                              price: product.price,
+                              rating: 4.5, // 임의의 값 사용
+                              description: product.description,
+                            ),
+                          ),
+                        );
+                      },
+                      child: _buildProductItem(context, product),
+                    );
+                  },
+                );
               },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) =>
+                  Center(child: Text(error.toString())),
             ),
           ),
         ],
