@@ -47,6 +47,8 @@ dependencies:
     fl_chart: ^0.68.0
     aws_secretsmanager_api:
     carousel_slider: ^4.2.1
+    flutter_tts:
+    speech_to_text: ^6.6.2
 
 dev_dependencies:
     flutter_test:
