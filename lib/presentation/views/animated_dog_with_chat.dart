@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:boostme2/core/constants/constants.dart';
 import 'package:boostme2/core/utils/chat_service.dart';
 import 'package:boostme2/presentation/viewmodels/weight_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class AnimatedDogWithChat extends ConsumerStatefulWidget {
   const AnimatedDogWithChat({super.key});
@@ -14,7 +14,7 @@ class AnimatedDogWithChat extends ConsumerStatefulWidget {
 }
 
 class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   AnimationController? _controller;
   Animation<double>? _animation;
   bool _showChat = false;
@@ -28,6 +28,15 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   bool _isLoading = false; // 응답을 기다리는 상태를 추가
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode(); // 입력창에 포커스를 맞추기 위한 FocusNode
+
+  // Speech to text 관련 변수
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _voiceInput = '';
+
+  // 점 애니메이션 관련 변수
+  late AnimationController _dotController;
+  late List<Animation<double>> _dotAnimations;
 
   @override
   void initState() {
@@ -43,6 +52,28 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
       });
 
     _controller!.forward();
+
+    _speech = stt.SpeechToText();
+
+    // 점 애니메이션 초기화
+    _dotController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _dotAnimations = List.generate(
+      3,
+      (index) => Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+          parent: _dotController,
+          curve: Interval(
+            index * 0.2,
+            1.0,
+            curve: Curves.easeInOut,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -51,6 +82,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     _textController.dispose();
     _scrollController.dispose();
     _focusNode.dispose();
+    _dotController.dispose();
     super.dispose();
   }
 
@@ -144,6 +176,38 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
         });
       }
       _textController.clear();
+    }
+  }
+
+  void _listen() async {
+    if (!_isListening) {
+      bool available = await _speech.initialize(
+        onStatus: (val) {
+          if (val == "notListening") {
+            _sendMessage(); // 음성 인식이 끝나면 메시지 전송
+            setState(() => _isListening = false);
+            _textController.clear(); // 텍스트 컨트롤러 초기화
+          }
+          print('onStatus: $val');
+        },
+        onError: (val) => print('onError: $val'),
+      );
+      if (available) {
+        setState(() => _isListening = true);
+        _speech.listen(
+          onResult: (val) => setState(() {
+            _voiceInput = val.recognizedWords;
+            if (val.hasConfidenceRating && val.confidence > 0) {
+              _textController.text = _voiceInput;
+            }
+          }),
+        );
+      }
+    } else {
+      setState(() => _isListening = false);
+      _speech.stop();
+      _sendMessage(); // 음성 인식이 중지되면 메시지 전송
+      _textController.clear(); // 텍스트 컨트롤러 초기화
     }
   }
 
@@ -242,6 +306,31 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                                   _sendMessage(), // 엔터키를 눌렀을 때 메시지 전송
                             ),
                           ),
+                          _isListening
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.generate(3, (index) {
+                                      return FadeTransition(
+                                        opacity: _dotAnimations[index],
+                                        child: const Text(
+                                          '·',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                )
+                              : IconButton(
+                                  icon: const Icon(Icons.mic_none),
+                                  onPressed: _isLoading ? null : _listen,
+                                ),
                           IconButton(
                             icon: const Icon(Icons.send),
                             onPressed: _isLoading
