@@ -4,6 +4,7 @@ import 'package:boostme2/core/utils/chat_service.dart';
 import 'package:boostme2/presentation/viewmodels/weight_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class AnimatedDogWithChat extends ConsumerStatefulWidget {
@@ -54,6 +55,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     _controller!.forward();
 
     _speech = stt.SpeechToText();
+    _requestPermissions();
 
     // 점 애니메이션 초기화
     _dotController = AnimationController(
@@ -84,6 +86,13 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     _focusNode.dispose();
     _dotController.dispose();
     super.dispose();
+  }
+
+  void _requestPermissions() async {
+    var status = await Permission.microphone.status;
+    if (!status.isGranted) {
+      await Permission.microphone.request();
+    }
   }
 
   void _toggleChat() {
