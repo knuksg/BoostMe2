@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:boostme2/core/constants/constants.dart';
 import 'package:boostme2/core/utils/chat_service.dart';
 import 'package:boostme2/presentation/viewmodels/weight_viewmodel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -75,13 +76,6 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
         ),
       ),
     );
-
-    // 앱 시작 시 권한 요청
-    _requestPermissions();
-  }
-
-  Future<void> _requestPermissions() async {
-    await [Permission.microphone].request();
   }
 
   @override
