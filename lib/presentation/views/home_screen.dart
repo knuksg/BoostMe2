@@ -51,24 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _requestPermissions();
-  }
-
-  Future<void> _requestPermissions() async {
-    var status = await Permission.microphone.status;
-    if (!status.isGranted) {
-      status = await Permission.microphone.request();
-    }
-    if (status.isGranted) {
-      print('Microphone permission granted');
-    } else {
-      print('Microphone permission denied');
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(

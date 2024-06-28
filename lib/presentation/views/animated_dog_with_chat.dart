@@ -182,6 +182,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   }
 
   void _listen() async {
+    await _requestPermissions();
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) {
@@ -210,6 +211,24 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
       _speech.stop();
       _sendMessage(); // 음성 인식이 중지되면 메시지 전송
       _textController.clear(); // 텍스트 컨트롤러 초기화
+    }
+  }
+
+  Future<void> _requestPermissions() async {
+    if (kIsWeb) {
+      // 웹에서는 별도의 권한 요청이 필요 없으므로 바로 리턴
+      return;
+    } else {
+      var status = await Permission.microphone.status;
+      if (!status.isGranted) {
+        status = await Permission.microphone.request();
+      }
+      if (status.isGranted) {
+        print('Microphone permission granted');
+      } else {
+        print('Microphone permission denied');
+        throw Exception('Microphone permission denied');
+      }
     }
   }
 
