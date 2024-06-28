@@ -1,0 +1,37 @@
+<variant
+    name="release"
+    package="com.example.boostme2"
+    minSdkVersion="21"
+    targetSdkVersion="33"
+    shrinking="true"
+    mergedManifest="D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\intermediates\merged_manifest\release\processReleaseMainManifest\AndroidManifest.xml"
+    proguardFiles="D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\intermediates\default_proguard_files\global\proguard-android.txt-8.5.0;C:\Users\USER\flutter\packages\flutter_tools\gradle\flutter_proguard_rules.pro;proguard-rules.pro"
+    partialResultsDir="D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\intermediates\lint_vital_partial_results\release\lintVitalAnalyzeRelease\out"
+    desugaredMethodsFiles="C:\Users\USER\.gradle\caches\transforms-4\f1543411083c2fe8d6c8df465bc6b71e\transformed\D8BackportedDesugaredMethods.txt">
+  <buildFeatures
+      namespacing="REQUIRED"/>
+  <sourceProviders>
+    <sourceProvider
+        manifests="src\main\AndroidManifest.xml"
+        javaDirectories="src\main\java;src\main\kotlin;src\release\java;src\release\kotlin"
+        resDirectories="src\main\res;src\release\res"
+        assetsDirectories="src\main\assets;src\release\assets"/>
+  </sourceProviders>
+  <testSourceProviders>
+  </testSourceProviders>
+  <testFixturesSourceProviders>
+  </testFixturesSourceProviders>
+  <manifestPlaceholders>
+    <placeholder
+        name="applicationName"
+        value="android.app.Application" />
+  </manifestPlaceholders>
+  <artifact
+      classOutputs="D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\intermediates\javac\release\compileReleaseJavaWithJavac\classes;D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\tmp\kotlin-classes\release;D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\kotlinToolingMetadata;D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\intermediates\compile_and_runtime_not_namespaced_r_class_jar\release\processReleaseResources\R.jar"
+      type="MAIN"
+      applicationId="com.example.boostme2"
+      generatedSourceFolders="D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\generated\ap_generated_sources\release\out"
+      generatedResourceFolders="D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\generated\res\google-services\release;D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\app\generated\res\resValues\release"
+      desugaredMethodsFiles="C:\Users\USER\.gradle\caches\transforms-4\f1543411083c2fe8d6c8df465bc6b71e\transformed\D8BackportedDesugaredMethods.txt">
+  </artifact>
+</variant>

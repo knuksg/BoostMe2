@@ -11,13 +11,15 @@ class UserRepositoryImpl implements UserRepository {
   Future<User> getUser() async {
     final userInfo = await remoteDataSource.getUser();
 
-    return User(
+    final user = User(
       email: userInfo['email'],
       uid: userInfo['uid'],
-      photoUrl: userInfo['photoUrl'],
+      photoUrl: userInfo['photo_url'],
       username: userInfo['username'],
       bio: userInfo['bio'],
     );
+
+    return user;
   }
 
   @override

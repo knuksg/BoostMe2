@@ -81,7 +81,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   }
 
   Future<void> _requestPermissions() async {
-    await Permission.microphone.request();
+    await [Permission.microphone].request();
   }
 
   @override

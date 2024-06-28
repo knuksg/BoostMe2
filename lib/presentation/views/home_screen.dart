@@ -1,7 +1,9 @@
+import 'package:boostme2/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:boostme2/presentation/views/profile_screen.dart';
 import 'package:boostme2/presentation/views/responsive_scaffold.dart';
 import 'package:boostme2/presentation/views/shopping_screen.dart';
 import 'package:boostme2/presentation/views/weight_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'animated_dog_with_chat.dart';
 
@@ -39,8 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
+    setState(() async {
       _selectedIndex = index;
+      if (_selectedIndex == 7) {
+        await FirebaseAuth.instance.signOut();
+      }
     });
   }
 

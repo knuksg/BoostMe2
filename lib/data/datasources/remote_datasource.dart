@@ -31,6 +31,7 @@ class RemoteDataSource {
     );
 
     if (response.statusCode == 200) {
+      print("Response at remote datasource: ${response.body}");
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load user info');

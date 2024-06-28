@@ -1,0 +1,13 @@
+com.tundralabs.fluttertts.flutter_tts-jetified-annotation-experimental-1.1.0-0 C:\Users\USER\.gradle\caches\transforms-4\477a5227354dafeafb90fefe729d5a3f\transformed\jetified-annotation-experimental-1.1.0\res
+com.tundralabs.fluttertts.flutter_tts-core-1.8.0-1 C:\Users\USER\.gradle\caches\transforms-4\66eb4ca0bc4c9d4ccde8155672902680\transformed\core-1.8.0\res
+com.tundralabs.fluttertts.flutter_tts-lifecycle-runtime-2.3.1-2 C:\Users\USER\.gradle\caches\transforms-4\7287f8518a437c656421cdf637702eeb\transformed\lifecycle-runtime-2.3.1\res
+com.tundralabs.fluttertts.flutter_tts-jetified-core-ktx-1.8.0-3 C:\Users\USER\.gradle\caches\transforms-4\9c3b56f8b39b6ce5f52c9c9c249fadcb\transformed\jetified-core-ktx-1.8.0\res
+com.tundralabs.fluttertts.flutter_tts-jetified-window-1.0.0-beta04-4 C:\Users\USER\.gradle\caches\transforms-4\9d31c4f6a1d877d9e4f5038812de99b2\transformed\jetified-window-1.0.0-beta04\res
+com.tundralabs.fluttertts.flutter_tts-jetified-window-java-1.0.0-beta04-5 C:\Users\USER\.gradle\caches\transforms-4\bb36e63718d37e4ca581eeef6356b647\transformed\jetified-window-java-1.0.0-beta04\res
+com.tundralabs.fluttertts.flutter_tts-main-6 C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_tts-4.0.2\android\src\main\res
+com.tundralabs.fluttertts.flutter_tts-release-7 C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_tts-4.0.2\android\src\release\res
+com.tundralabs.fluttertts.flutter_tts-pngs-8 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\flutter_tts\generated\res\pngs\release
+com.tundralabs.fluttertts.flutter_tts-resValues-9 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\flutter_tts\generated\res\resValues\release
+com.tundralabs.fluttertts.flutter_tts-mergeReleaseResources-10 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\flutter_tts\intermediates\incremental\release\mergeReleaseResources\merged.dir
+com.tundralabs.fluttertts.flutter_tts-mergeReleaseResources-11 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\flutter_tts\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+com.tundralabs.fluttertts.flutter_tts-release-12 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\flutter_tts\intermediates\merged_res\release\mergeReleaseResources

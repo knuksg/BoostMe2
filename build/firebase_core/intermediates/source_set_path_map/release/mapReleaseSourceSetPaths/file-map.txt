@@ -1,0 +1,13 @@
+io.flutter.plugins.firebase.core.firebase_core-jetified-play-services-basement-18.3.0-0 C:\Users\USER\.gradle\caches\transforms-4\17d3b06e0354a939b377634342d13af0\transformed\jetified-play-services-basement-18.3.0\res
+io.flutter.plugins.firebase.core.firebase_core-jetified-annotation-experimental-1.1.0-1 C:\Users\USER\.gradle\caches\transforms-4\477a5227354dafeafb90fefe729d5a3f\transformed\jetified-annotation-experimental-1.1.0\res
+io.flutter.plugins.firebase.core.firebase_core-core-1.6.0-2 C:\Users\USER\.gradle\caches\transforms-4\5937264ca0696f00e77965d8cbf61243\transformed\core-1.6.0\res
+io.flutter.plugins.firebase.core.firebase_core-jetified-window-1.0.0-beta04-3 C:\Users\USER\.gradle\caches\transforms-4\9d31c4f6a1d877d9e4f5038812de99b2\transformed\jetified-window-1.0.0-beta04\res
+io.flutter.plugins.firebase.core.firebase_core-jetified-window-java-1.0.0-beta04-4 C:\Users\USER\.gradle\caches\transforms-4\bb36e63718d37e4ca581eeef6356b647\transformed\jetified-window-java-1.0.0-beta04\res
+io.flutter.plugins.firebase.core.firebase_core-jetified-firebase-common-20.4.3-5 C:\Users\USER\.gradle\caches\transforms-4\dd15521442fbd5fe897a083a5fd3974a\transformed\jetified-firebase-common-20.4.3\res
+io.flutter.plugins.firebase.core.firebase_core-main-6 C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-2.31.0\android\src\main\res
+io.flutter.plugins.firebase.core.firebase_core-release-7 C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-2.31.0\android\src\release\res
+io.flutter.plugins.firebase.core.firebase_core-pngs-8 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\firebase_core\generated\res\pngs\release
+io.flutter.plugins.firebase.core.firebase_core-resValues-9 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\firebase_core\generated\res\resValues\release
+io.flutter.plugins.firebase.core.firebase_core-mergeReleaseResources-10 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\firebase_core\intermediates\incremental\release\mergeReleaseResources\merged.dir
+io.flutter.plugins.firebase.core.firebase_core-mergeReleaseResources-11 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\firebase_core\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+io.flutter.plugins.firebase.core.firebase_core-release-12 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\firebase_core\intermediates\merged_res\release\mergeReleaseResources

@@ -35,6 +35,7 @@ class AuthViewModel extends StateNotifier<AsyncValue<firebase_auth.User?>> {
   firebase_auth.User? get currentUser => _firebaseAuth.currentUser;
 
   Future<void> signInWithGoogle() async {
+    print('Signing in with Google...');
     try {
       firebase_auth.UserCredential userCredential;
       if (kIsWeb) {
@@ -54,9 +55,13 @@ class AuthViewModel extends StateNotifier<AsyncValue<firebase_auth.User?>> {
       }
 
       final user = userCredential.user;
+      print('User: ${user?.email}');
       if (user != null) {
         // DB에서 유저 정보 확인
         try {
+          print("Checking if user exists: ${user.email}");
+          final testUser = await getUser.call();
+          print("User exists: $testUser");
           final model.User dbUser = await getUser.call();
           print("User already exists: ${dbUser.email}");
         } catch (e) {

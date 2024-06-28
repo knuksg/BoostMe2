@@ -1,0 +1,11 @@
+com.csdcorp.speech_to_text-jetified-annotation-experimental-1.1.0-0 C:\Users\USER\.gradle\caches\transforms-4\477a5227354dafeafb90fefe729d5a3f\transformed\jetified-annotation-experimental-1.1.0\res
+com.csdcorp.speech_to_text-core-1.6.0-1 C:\Users\USER\.gradle\caches\transforms-4\5937264ca0696f00e77965d8cbf61243\transformed\core-1.6.0\res
+com.csdcorp.speech_to_text-jetified-window-1.0.0-beta04-2 C:\Users\USER\.gradle\caches\transforms-4\9d31c4f6a1d877d9e4f5038812de99b2\transformed\jetified-window-1.0.0-beta04\res
+com.csdcorp.speech_to_text-jetified-window-java-1.0.0-beta04-3 C:\Users\USER\.gradle\caches\transforms-4\bb36e63718d37e4ca581eeef6356b647\transformed\jetified-window-java-1.0.0-beta04\res
+com.csdcorp.speech_to_text-main-4 C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\speech_to_text-6.6.2\android\src\main\res
+com.csdcorp.speech_to_text-release-5 C:\Users\USER\AppData\Local\Pub\Cache\hosted\pub.dev\speech_to_text-6.6.2\android\src\release\res
+com.csdcorp.speech_to_text-pngs-6 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\speech_to_text\generated\res\pngs\release
+com.csdcorp.speech_to_text-resValues-7 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\speech_to_text\generated\res\resValues\release
+com.csdcorp.speech_to_text-mergeReleaseResources-8 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\speech_to_text\intermediates\incremental\release\mergeReleaseResources\merged.dir
+com.csdcorp.speech_to_text-mergeReleaseResources-9 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\speech_to_text\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+com.csdcorp.speech_to_text-release-10 D:\KIMSEONGYO\boostme\boostme\boostme_flutter\build\speech_to_text\intermediates\merged_res\release\mergeReleaseResources
