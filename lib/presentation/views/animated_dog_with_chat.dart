@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class AnimatedDogWithChat extends ConsumerStatefulWidget {
   const AnimatedDogWithChat({super.key});
@@ -20,6 +21,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   AnimationController? _controller;
   Animation<double>? _animation;
   bool _showChat = false;
+  bool _ttsEnabled = false; // TTS 활성화 여부
   final List<Map<String, String>> _messages = [
     {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
   ];
@@ -40,6 +42,9 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   late AnimationController _dotController;
   late List<Animation<double>> _dotAnimations;
 
+  // TTS 관련 변수
+  late FlutterTts _flutterTts;
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +61,9 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     _controller!.forward();
 
     _speech = stt.SpeechToText();
+
+    // TTS 초기화
+    _flutterTts = FlutterTts();
 
     // 점 애니메이션 초기화
     _dotController = AnimationController(
@@ -76,6 +84,27 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
         ),
       ),
     );
+
+    // 앱 시작 시 권한 요청
+    _requestPermissions();
+  }
+
+  Future<void> _requestPermissions() async {
+    if (kIsWeb) {
+      // 웹에서는 별도의 권한 요청이 필요 없으므로 바로 리턴
+      return;
+    } else {
+      var status = await Permission.microphone.status;
+      if (!status.isGranted) {
+        status = await Permission.microphone.request();
+      }
+      if (status.isGranted) {
+        print('Microphone permission granted');
+      } else {
+        print('Microphone permission denied');
+        throw Exception('Microphone permission denied');
+      }
+    }
   }
 
   @override
@@ -85,6 +114,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     _scrollController.dispose();
     _focusNode.dispose();
     _dotController.dispose();
+    _flutterTts.stop(); // TTS 중지
     super.dispose();
   }
 
@@ -144,11 +174,17 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
               _messages.add(
                   {"role": "assistant", "content": jsonResponse['response']});
               _isLoading = false; // 응답이 도착했으므로 상태 변경
+              if (_ttsEnabled) {
+                _speak(jsonResponse['response']); // TTS로 응답 읽기
+              }
             });
           } else {
             setState(() {
               _messages.add({"role": "assistant", "content": response});
               _isLoading = false; // 응답이 도착했으므로 상태 변경
+              if (_ttsEnabled) {
+                _speak(response); // TTS로 응답 읽기
+              }
             });
           }
         } catch (e) {
@@ -156,6 +192,9 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
             // 응답이 JSON 형식이 아닌 경우 처리
             _messages.add({"role": "assistant", "content": response});
             _isLoading = false; // 응답이 도착했으므로 상태 변경
+            if (_ttsEnabled) {
+              _speak(response); // TTS로 응답 읽기
+            }
           });
         }
 
@@ -214,22 +253,16 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     }
   }
 
-  Future<void> _requestPermissions() async {
-    if (kIsWeb) {
-      // 웹에서는 별도의 권한 요청이 필요 없으므로 바로 리턴
-      return;
-    } else {
-      var status = await Permission.microphone.status;
-      if (!status.isGranted) {
-        status = await Permission.microphone.request();
-      }
-      if (status.isGranted) {
-        print('Microphone permission granted');
-      } else {
-        print('Microphone permission denied');
-        throw Exception('Microphone permission denied');
-      }
-    }
+  Future<void> _speak(String text) async {
+    await _flutterTts.setLanguage("ko-KR");
+    await _flutterTts.setPitch(1.0);
+    await _flutterTts.speak(text);
+  }
+
+  void _toggleTTS() {
+    setState(() {
+      _ttsEnabled = !_ttsEnabled;
+    });
   }
 
   @override
@@ -319,8 +352,8 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                               controller: _textController,
                               decoration: const InputDecoration.collapsed(
                                   hintText:
-                                      'Enter your message (max 500 characters)'),
-                              maxLength: 500, // 텍스트 길이 제한 추가
+                                      'Enter your message (max 100 characters)'),
+                              maxLength: 100, // 텍스트 길이 제한 추가
                               enabled: !_isLoading, // 응답을 기다리는 동안 비활성화
                               focusNode: _focusNode, // 포커스 노드 추가
                               onSubmitted: (value) =>
@@ -364,6 +397,14 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                         child: const Text('Reset Chat'),
                       ),
                     ),
+                  // TTS 활성화 버튼 추가
+                  SwitchListTile(
+                    title: const Text('음성으로 듣기'),
+                    value: _ttsEnabled,
+                    onChanged: (bool value) {
+                      _toggleTTS();
+                    },
+                  ),
                 ],
               ),
             ),
