@@ -50,6 +50,7 @@ dependencies:
     flutter_tts:
     speech_to_text:
     permission_handler:
+    shared_preferences: ^2.2.3
 
 dev_dependencies:
     flutter_test:

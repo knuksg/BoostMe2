@@ -1,13 +1,6 @@
-import 'dart:convert';
-import 'package:boostme2/core/constants/constants.dart';
-import 'package:boostme2/core/utils/chat_service.dart';
-import 'package:boostme2/presentation/viewmodels/weight_viewmodel.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:boostme2/core/utils/import.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 class AnimatedDogWithChat extends ConsumerStatefulWidget {
   const AnimatedDogWithChat({super.key});
@@ -22,13 +15,11 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   Animation<double>? _animation;
   bool _showChat = false;
   bool _ttsEnabled = false; // TTS 활성화 여부
-  final List<Map<String, String>> _messages = [
-    {"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"}
-  ];
+  final List<String> _messages = [];
   final TextEditingController _textController = TextEditingController();
   final ChatService _chatService =
       ChatService(AppConstants.apiUrl); // Node.js 서버 URL
-  bool _inputDisabled = false;
+  final bool _inputDisabled = false;
   bool _isLoading = false; // 응답을 기다리는 상태를 추가
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode(); // 입력창에 포커스를 맞추기 위한 FocusNode
@@ -38,16 +29,14 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
   bool _isListening = false;
   String _voiceInput = '';
 
-  // 점 애니메이션 관련 변수
-  late AnimationController _dotController;
-  late List<Animation<double>> _dotAnimations;
-
-  // TTS 관련 변수
-  late FlutterTts _flutterTts;
+  // TTS 유틸리티 변수
+  late TTSUtil _ttsUtil;
 
   @override
   void initState() {
     super.initState();
+    _initializePrefs();
+
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -62,31 +51,28 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
 
     _speech = stt.SpeechToText();
 
-    // TTS 초기화
-    _flutterTts = FlutterTts();
-
-    // 점 애니메이션 초기화
-    _dotController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _dotAnimations = List.generate(
-      3,
-      (index) => Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: _dotController,
-          curve: Interval(
-            index * 0.2,
-            1.0,
-            curve: Curves.easeInOut,
-          ),
-        ),
-      ),
-    );
+    // TTS 유틸리티 초기화
+    _ttsUtil = TTSUtil();
 
     // 앱 시작 시 권한 요청
     _requestPermissions();
+    _initializeWelcomeMessage();
+  }
+
+  Future<void> _initializeWelcomeMessage() async {
+    final userName = ref.read(authViewModelProvider).value?.displayName ?? '유저';
+
+    setState(() {
+      _messages.add("안녕하세요, $userName님! 무엇을 도와드릴까요?");
+    });
+  }
+
+  Future<void> _initializePrefs() async {
+    final conversation = await _chatService.getConversation();
+    setState(() {
+      if (conversation['assistantId'] != null &&
+          conversation['threadId'] != null) {}
+    });
   }
 
   Future<void> _requestPermissions() async {
@@ -94,16 +80,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
       // 웹에서는 별도의 권한 요청이 필요 없으므로 바로 리턴
       return;
     } else {
-      var status = await Permission.microphone.status;
-      if (!status.isGranted) {
-        status = await Permission.microphone.request();
-      }
-      if (status.isGranted) {
-        print('Microphone permission granted');
-      } else {
-        print('Microphone permission denied');
-        throw Exception('Microphone permission denied');
-      }
+      await PermissionUtil.requestMicrophonePermission();
     }
   }
 
@@ -113,8 +90,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     _textController.dispose();
     _scrollController.dispose();
     _focusNode.dispose();
-    _dotController.dispose();
-    _flutterTts.stop(); // TTS 중지
+    _ttsUtil.stop(); // TTS 중지
     super.dispose();
   }
 
@@ -137,66 +113,52 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
     }
   }
 
-  void _resetChat() {
-    setState(() {
-      _messages.clear();
-      _messages.add({"role": "assistant", "content": "안녕하세요! 무엇을 도와드릴까요?"});
-      _inputDisabled = false;
-    });
-  }
-
   Future<void> _sendMessage() async {
     if (_textController.text.isNotEmpty && _textController.text.length <= 500) {
+      final message = _textController.text;
       setState(() {
-        _messages.add({"role": "user", "content": _textController.text});
+        _messages.add(message);
         _isLoading = true; // 응답을 기다리는 상태로 변경
-        if (_messages.where((message) => message['role'] == 'user').length >=
-            5) {
-          _inputDisabled = true;
-        }
       });
 
       try {
-        final response = await _chatService.sendMessage(_messages);
+        final assistantIdandThreadId = await _chatService.getConversation();
 
-        // 응답이 JSON 형식인 경우 처리
-        try {
-          final jsonResponse = jsonDecode(response);
-          if (jsonResponse['function_name'] == 'create_weight' &&
-              jsonResponse['value'] != null) {
-            final weight = double.tryParse(jsonResponse['value']);
-            if (weight != null) {
-              final weightViewModel =
-                  ref.read(weightViewModelProvider.notifier);
-              await weightViewModel.addWeight(weight);
-            }
-            setState(() {
-              _messages.add(
-                  {"role": "assistant", "content": jsonResponse['response']});
-              _isLoading = false; // 응답이 도착했으므로 상태 변경
-              if (_ttsEnabled) {
-                _speak(jsonResponse['response']); // TTS로 응답 읽기
-              }
-            });
-          } else {
-            setState(() {
-              _messages.add({"role": "assistant", "content": response});
-              _isLoading = false; // 응답이 도착했으므로 상태 변경
-              if (_ttsEnabled) {
-                _speak(response); // TTS로 응답 읽기
-              }
-            });
-          }
-        } catch (e) {
-          setState(() {
-            // 응답이 JSON 형식이 아닌 경우 처리
-            _messages.add({"role": "assistant", "content": response});
-            _isLoading = false; // 응답이 도착했으므로 상태 변경
-            if (_ttsEnabled) {
-              _speak(response); // TTS로 응답 읽기
-            }
-          });
+        final assistantId = assistantIdandThreadId['assistantId'];
+        final threadId = assistantIdandThreadId['threadId'];
+
+        print('assistantId: $assistantId, threadId: $threadId');
+
+        final response = await _chatService.sendMessage(
+          message,
+          assistantId,
+          threadId,
+        );
+
+        if (response['assistantId'] != null && response['threadId'] != null) {
+          await _chatService.saveConversation(
+            response['assistantId'],
+            response['threadId'],
+          );
         }
+
+        if (response['function_name'] != null &&
+            response['function_name'] == 'create_weight' &&
+            response['value'] != null) {
+          final weight = double.tryParse(response['value']);
+          if (weight != null) {
+            final weightViewModel = ref.read(weightViewModelProvider.notifier);
+            await weightViewModel.addWeight(weight);
+          }
+        }
+
+        setState(() {
+          _messages.add(response['response']);
+          _isLoading = false; // 응답이 도착했으므로 상태 변경
+          if (_ttsEnabled) {
+            _ttsUtil.speak(response['response']); // TTS로 응답 읽기
+          }
+        });
 
         // 스크롤을 가장 최신 메시지로 이동
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -208,11 +170,9 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
           _focusNode.requestFocus(); // 응답이 도착했을 때 입력창에 포커스
         });
       } catch (error) {
+        print('Error: $error');
         setState(() {
-          _messages.add({
-            "role": "assistant",
-            "content": "Sorry, I couldn't process your request."
-          });
+          _messages.add("Sorry, I couldn't process your request.");
           _isLoading = false; // 에러 발생 시 상태 변경
         });
       }
@@ -251,12 +211,6 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
       _sendMessage(); // 음성 인식이 중지되면 메시지 전송
       _textController.clear(); // 텍스트 컨트롤러 초기화
     }
-  }
-
-  Future<void> _speak(String text) async {
-    await _flutterTts.setLanguage("ko-KR");
-    await _flutterTts.setPitch(1.0);
-    await _flutterTts.speak(text);
   }
 
   void _toggleTTS() {
@@ -322,7 +276,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                       itemCount: _messages.length,
                       itemBuilder: (context, index) {
                         final message = _messages[index];
-                        final isUser = message['role'] == 'user';
+                        final isUser = index % 2 != 0;
                         return Align(
                           alignment: isUser
                               ? Alignment.centerRight
@@ -335,7 +289,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                                   isUser ? Colors.green[100] : Colors.blue[100],
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Text(message['content']!),
+                            child: Text(message),
                           ),
                         );
                       },
@@ -348,7 +302,7 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                       child: Row(
                         children: [
                           Expanded(
-                            child: TextField(
+                            child: TextFormField(
                               controller: _textController,
                               decoration: const InputDecoration.collapsed(
                                   hintText:
@@ -356,26 +310,13 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                               maxLength: 100, // 텍스트 길이 제한 추가
                               enabled: !_isLoading, // 응답을 기다리는 동안 비활성화
                               focusNode: _focusNode, // 포커스 노드 추가
-                              onSubmitted: (value) =>
+                              maxLines: null, // 입력 텍스트에 따라 자동으로 높이 조절
+                              onFieldSubmitted: (value) =>
                                   _sendMessage(), // 엔터키를 눌렀을 때 메시지 전송
                             ),
                           ),
                           _isListening
-                              ? Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: List.generate(3, (index) {
-                                    return FadeTransition(
-                                      opacity: _dotAnimations[index],
-                                      child: const Text(
-                                        '.',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                )
+                              ? const DotAnimationWidget() // 점 애니메이션 위젯 사용
                               : IconButton(
                                   icon: const Icon(Icons.mic_none),
                                   onPressed: _isLoading ? null : _listen,
@@ -387,14 +328,6 @@ class _AnimatedDogWithChatState extends ConsumerState<AnimatedDogWithChat>
                                 : _sendMessage, // 응답을 기다리는 동안 비활성화
                           ),
                         ],
-                      ),
-                    ),
-                  if (_inputDisabled)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: _resetChat,
-                        child: const Text('Reset Chat'),
                       ),
                     ),
                   // TTS 활성화 버튼 추가

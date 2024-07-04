@@ -42,11 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() async {
+    setState(() {
       _selectedIndex = index;
-      if (_selectedIndex == 7) {
-        await FirebaseAuth.instance.signOut();
-      }
+      // if (_selectedIndex == 7) {
+      //   await FirebaseAuth.instance.signOut();
+      // }
     });
   }
 

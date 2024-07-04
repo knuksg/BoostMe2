@@ -1,4 +1,4 @@
-#Fri Jun 28 15:29:03 KST 2024
+#Mon Jul 01 15:59:51 KST 2024
 base.0=D\:\\KIMSEONGYO\\boostme\\boostme\\boostme_flutter\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
